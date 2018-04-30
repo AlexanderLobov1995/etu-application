@@ -1,0 +1,22 @@
+{
+  "roles": [
+    {
+      "name": "admin",
+      "value": 2
+    },
+    {
+      "name": "user",
+      "value": 1
+    },
+    {
+      "name": "guest",
+      "value": 0
+    }
+  ],
+  "level": {
+    "get": 1,
+    "update": 2,
+    "create": 2,
+    "authorize": 0
+  }
+}
