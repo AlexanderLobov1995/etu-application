@@ -1,0 +1,10 @@
+# folder .idea
+.idea/
+
+# folder node_moduls
+web-configs/node_modules/
+web-rest/node_modules/
+web-ui/node_modules/
+
+#folder dist
+web-ui/dist/

@@ -6,7 +6,7 @@ import { Human } from '../interfaces';
 @Component({
   selector: 'app-other-component',
   templateUrl: './other-component.component.html',
-  styleUrls: ['./other-component.component.css']
+  styleUrls: ['./other-component.component.styl']
 
 })
 export class OtherComponent implements OnInit {

@@ -1,0 +1,35 @@
+body
+  padding 0
+  margin 0
+app-main
+  header
+    height: 6vh;
+    background-color: rgba(0,0,0,.5)
+    position: fixed
+    width: 100vw
+    z-index: 1
+    span
+      color: white
+      font-size: 24px
+  .content
+    display: flex
+    width: 100vw
+    height: 100vh
+    overflow-y: hidden
+    .navigation
+      padding 6vh 1vw
+      display flex
+      flex-direction column
+      justify-content space-around
+      app-icon
+        width 40px
+        height 40px
+        background-color rgba(0,0,0,.5)
+        border-radius 30px
+    .page-content
+      transition: transform 0.5s;
+      .page
+        display: flex
+        padding: 9vh 6vw 0 6vw
+        height: calc(100vh - 9vh)
+        background-color whitesmoke

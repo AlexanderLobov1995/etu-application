@@ -3,7 +3,24 @@
         <span>Authorization Guide</span>
     </header>
     <div class="content">
-        <span>Some content</span>
-        <app-login></app-login>
+        <div class="navigation">
+            <app-icon *ngIf="pageOffset < 0" (click)="goUp()" ic="go-back"></app-icon>
+            <app-icon *ngIf="pageOffset > -200" (click)="goDown()" ic="go-down"></app-icon>
+        </div>
+        <div [style.transform]="'translateY('+ pageOffset + 'vh)'" class="page-content">
+            <div class="page">
+                <div class="block-1">
+                    <p>Довольно важной задачей при разработке веб-сайтов и веб-приложений есть ограничение доступа к некоторым разделам сайта, например к панели администратора. В теории это достаточно сложный процесс, с трема составляющими - аутентификация, идентификация и авторизация (англ. authentication, identification, authorization).</p>
+
+                </div>
+                <app-signup></app-signup>
+            </div>
+            <div class="page">
+
+            </div>
+            <div class="page">
+
+            </div>
+        </div>
     </div>
 </div>

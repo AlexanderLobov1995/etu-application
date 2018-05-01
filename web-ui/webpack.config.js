@@ -32,9 +32,9 @@ module.exports = {
         loader: 'file-loader'
       },
       {
-        test: /\.css$/,
+        test: /\.styl$/,
         include: [path.resolve(__dirname, 'app')],
-        use: ['to-string-loader', 'style-loader', 'css-loader']
+        use: ['to-string-loader', 'style-loader', 'css-loader', 'stylus-loader']
       }
     ]
   },

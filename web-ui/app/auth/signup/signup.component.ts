@@ -6,16 +6,19 @@ import {AuthService} from "../auth.service";
 const jwt = require('jsonwebtoken');
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.styl']
+  selector: 'app-signup',
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.styl']
 })
-export class LoginComponent {
+export class SignUpComponent {
   @ViewChild('authForm') authForm: NgForm;
 
-  username = '';
+  firstname = '';
+  lastname = '';
+  email = '';
   password = '';
-
+  password2 = '';
+  username = '';
 
   constructor(public authService: AuthService, private authState: AuthState) {
   }

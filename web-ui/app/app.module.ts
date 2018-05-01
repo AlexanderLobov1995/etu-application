@@ -8,12 +8,14 @@ import {appRoutes} from './app.routes';
 import {AuthModule} from "./auth/auth.module";
 import {OtherModule} from './other-component/other-component.module';
 import {RootComponent} from './root.component';
+import {SharedModule} from "./shared/shared.module";
 
 @NgModule({
   imports: [
     BrowserModule,
     OtherModule,
     AuthModule,
+    SharedModule,
     RouterModule.forRoot(appRoutes)
   ],
   declarations: [AppComponent, RootComponent],

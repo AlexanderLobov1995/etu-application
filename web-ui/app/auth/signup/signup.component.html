@@ -1,0 +1,9 @@
+<form (submit)="login()" #authForm="ngForm">
+    <input [(ngModel)]="firstname" type="text" placeholder="Имя" name="firstname" required class="firstname"/>
+    <input [(ngModel)]="lastname" type="text" placeholder="Фамилия" name="lastname" required class="lastname"/>
+    <input [(ngModel)]="email" type="text" placeholder="Email" name="email" required class="email"/>
+    <input [(ngModel)]="username" type="text" placeholder="username" name="username" required class="username"/>
+    <input [(ngModel)]="password" type="password" placeholder="Пароль" name="password" required class="password"/>
+    <input [(ngModel)]="password2" type="password2" placeholder="Пароль" name="password2" required class="password2"/>
+    <button class="submit" (submit)="login()">Зарегистрироваться</button>
+</form>

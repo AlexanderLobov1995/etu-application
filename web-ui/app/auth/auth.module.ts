@@ -4,14 +4,15 @@ import {FormsModule} from '@angular/forms';
 import {AuthState} from "./auth-state";
 import {AuthService} from "./auth.service";
 import {LoginComponent} from "./login/login.component";
+import {SignUpComponent} from "./signup/signup.component";
 
 @NgModule({
   imports: [
     FormsModule,
     HttpClientModule
   ],
-  declarations: [LoginComponent],
-  exports: [LoginComponent],
+  declarations: [LoginComponent, SignUpComponent],
+  exports: [LoginComponent, SignUpComponent],
   providers: [
     AuthService,
     AuthState
