@@ -7,6 +7,8 @@ export class AuthState {
   @observable roles : Role[];
   @observable level: Level;
 
+  showAuthDialog = false;
+
   token = '';
   role = '';
 

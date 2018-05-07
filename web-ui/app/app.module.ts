@@ -3,7 +3,6 @@ import {NgModule} from '@angular/core';
 
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule} from '@angular/router';
-import {EventDirective} from "./event.directive";
 import {HeaderComponent} from "./header/header.component";
 import {NavigationState} from "./navigation-state";
 import {AppComponent} from './app.component';
@@ -22,7 +21,7 @@ import {SharedModule} from "./shared/shared.module";
     SharedModule,
     RouterModule.forRoot(appRoutes)
   ],
-  declarations: [AppComponent, RootComponent, NavigationComponent, HeaderComponent, EventDirective],
+  declarations: [AppComponent, RootComponent, NavigationComponent, HeaderComponent],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     NavigationState

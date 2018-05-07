@@ -10,7 +10,7 @@ import {AuthService} from "./auth/auth.service";
 })
 export class AppComponent {
 
-  constructor(public navigationState: NavigationState, authService: AuthService, authState: AuthState) {
+  constructor(public navigationState: NavigationState, authService: AuthService, public authState: AuthState) {
     authService.getAuthConfigs().subscribe((res: any) => {
       authState.roles = res.roles || [];
       authState.level = res.level;

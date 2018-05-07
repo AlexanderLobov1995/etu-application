@@ -1,0 +1,35 @@
+app-auth
+  display flex
+  position fixed
+  top: 0
+  left 0
+  z-index: 1
+  width 100vw
+  height 100vh
+  background-color: rgba(0,0,0,.5)
+  .auth-content
+    padding 0 18px 18px 18px
+    height 500px
+    margin auto
+    background-color white
+    button
+      border none
+      outline none
+      cursor pointer
+      font-size 16px
+    .tab
+      display flex
+      justify-content space-around
+      button
+        padding 10px
+        background-color transparent
+        border-bottom 2px solid #e8e8e8
+      & .active
+          border-color limegreen
+          color limegreen
+    .auth-close
+      padding-left 20px
+    .tab-content-container
+      position relative
+      .tab-content
+        position absolute
