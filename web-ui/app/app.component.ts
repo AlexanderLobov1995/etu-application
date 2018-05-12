@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import { Component} from '@angular/core';
+import {AppState} from "./app-state";
 import {NavigationState} from "./navigation-state";
 import {AuthState} from "./auth/auth-state";
 import {AuthService} from "./auth/auth.service";
@@ -10,7 +11,10 @@ import {AuthService} from "./auth/auth.service";
 })
 export class AppComponent {
 
-  constructor(public navigationState: NavigationState, authService: AuthService, public authState: AuthState) {
+  constructor(public navigationState: NavigationState,
+              authService: AuthService,
+              public authState: AuthState,
+              public appState: AppState) {
     authService.getAuthConfigs().subscribe((res: any) => {
       authState.roles = res.roles || [];
       authState.level = res.level;

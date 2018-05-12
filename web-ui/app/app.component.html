@@ -1,4 +1,4 @@
-<div class="container">
+<div *mobxAutorun class="container">
     <app-header></app-header>
     <div class="content">
         <app-navigation></app-navigation>
@@ -56,7 +56,7 @@
                         </tr>
                     </table>
                     <div class="button-content">
-                        <button>Создать</button>
+                        <button (mySubmit)="appState.showCreateDialog = true">Создать</button>
                         <button>Удалить</button>
                     </div>
                 </div>
@@ -70,4 +70,4 @@
         </div>
     </div>
 </div>
-<app-auth *ngIf="authState.showAuthDialog"></app-auth>
+<app-popup *ngIf="appState.showPopupDialog"></app-popup>

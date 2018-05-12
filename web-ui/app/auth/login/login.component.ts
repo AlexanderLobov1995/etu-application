@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {AuthState} from "../auth-state";
 import {AuthService} from "../auth.service";
@@ -8,7 +8,8 @@ const jwt = require('jsonwebtoken');
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.styl']
+  styleUrls: ['./login.component.styl'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
   @ViewChild('authForm') authForm: NgForm;

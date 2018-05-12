@@ -1,16 +1,19 @@
-import {Component, ElementRef, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, Component, ElementRef, ViewChild} from "@angular/core";
+import {AppState} from "../app-state";
 import {AuthState} from "../auth/auth-state";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.styl']
+  styleUrls: ['./header.component.styl'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
   @ViewChild('menu') menu: ElementRef;
   menuActive = false;
 
-  constructor(public authState: AuthState){
+  constructor(public authState: AuthState,
+              public appState: AppState){
     window.addEventListener('click', this.closeMenu);
   }
 
@@ -20,7 +23,7 @@ export class HeaderComponent {
   }
 
   submit(){
-    this.authState.showAuthDialog = true;
+    this.appState.showAuthDialog = true;
     this.menuActive =false;
   }
 

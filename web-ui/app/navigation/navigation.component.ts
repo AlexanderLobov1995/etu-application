@@ -1,10 +1,11 @@
-import {Component} from "@angular/core";
+import {ChangeDetectionStrategy, Component} from "@angular/core";
 import {NavigationState} from "../navigation-state";
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.styl']
+  styleUrls: ['./navigation.component.styl'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationComponent {
   constructor(public navigationState: NavigationState) {
