@@ -10,56 +10,7 @@
                     </div>
                     <app-signup></app-signup>
                 </div>
-                <div *ngIf="!authState.token" class="work-content">
-                    <div class="user-info">
-                        <h1 class="name">Имя: Александр</h1>
-                        <h1 class="lastName">Фамилия: Лобов</h1>
-                        <h1 class="role">Роль: Пользователь</h1>
-                    </div>
-                    <table>
-                        <tr>
-                            <td><input type="checkbox"/></td>
-                            <th>Task name</th>
-                            <th>Status</th>
-                            <th>Edit</th>
-                        </tr>
-
-                        <tr>
-                            <td><input type="checkbox"/></td>
-                            <td>task-1</td>
-                            <td>completed</td>
-                            <td>?</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"/></td>
-                            <td>task-2</td>
-                            <td>completed</td>
-                            <td>?</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"/></td>
-                            <td>task-2</td>
-                            <td>completed</td>
-                            <td>?</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"/></td>
-                            <td>task-2</td>
-                            <td>completed</td>
-                            <td>?</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"/></td>
-                            <td>task-3</td>
-                            <td>completed</td>
-                            <td>?</td>
-                        </tr>
-                    </table>
-                    <div class="button-content">
-                        <button (mySubmit)="appState.showCreateDialog = true">Создать</button>
-                        <button>Удалить</button>
-                    </div>
-                </div>
+                <app-todo-area *ngIf="!authState.token"></app-todo-area>
             </div>
             <div class="page">
 
@@ -70,4 +21,7 @@
         </div>
     </div>
 </div>
-<app-popup *ngIf="appState.showPopupDialog"></app-popup>
+<app-popup>
+    <app-auth *ngIf="appState.showAuthDialog"></app-auth>
+    <app-create-todo *ngIf="appState.showCreateDialog"></app-create-todo>
+</app-popup>

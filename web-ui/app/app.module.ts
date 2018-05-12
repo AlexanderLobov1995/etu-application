@@ -14,6 +14,10 @@ import {OtherModule} from './other-component/other-component.module';
 import {PopupComponent} from "./popup/popup.component";
 import {RootComponent} from './root.component';
 import {SharedModule} from "./shared/shared.module";
+import {TodoAreaComponent} from "./todo-area/todo-area.component";
+import {TodoService} from "./todo-area/todo.service";
+import {CreateTodoComponent} from "./todo/createTodo/createTodo.component";
+import {UpdateTodoComponent} from "./todo/updateTodo/updateTodo.component";
 
 @NgModule({
   imports: [
@@ -23,11 +27,12 @@ import {SharedModule} from "./shared/shared.module";
     SharedModule,
     RouterModule.forRoot(appRoutes)
   ],
-  declarations: [AppComponent, RootComponent, NavigationComponent, HeaderComponent, PopupComponent],
+  declarations: [AppComponent, RootComponent, NavigationComponent, HeaderComponent, PopupComponent, CreateTodoComponent, UpdateTodoComponent, TodoAreaComponent],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     NavigationState,
-    AppState
+    AppState,
+    TodoService
   ],
   bootstrap: [RootComponent]
 })

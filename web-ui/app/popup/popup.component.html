@@ -1,3 +1,5 @@
-<div class="popup-content">
-    <app-auth *ngIf="appState.showAuthDialog"></app-auth>
+<div [class.hidden]="!show" class="popup-container">
+    <div class="popup-content" #menu>
+        <ng-content></ng-content>
+    </div>
 </div>

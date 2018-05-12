@@ -1,0 +1,7 @@
+<div class="create-todo-container">
+    <input [(ngModel)]="todoName" type="text"/>
+    <div class="button-container">
+        <button>Добавить</button>
+        <button (mySubmit)="appState.showCreateDialog = false">Отменить</button>
+    </div>
+</div>
