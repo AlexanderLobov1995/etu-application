@@ -24,4 +24,5 @@
 <app-popup>
     <app-auth *ngIf="appState.showAuthDialog"></app-auth>
     <app-create-todo *ngIf="appState.showCreateDialog"></app-create-todo>
+    <app-update-todo *ngIf="appState.showUpdateDialog" [todo]="appState.updateTodo"></app-update-todo>
 </app-popup>

@@ -1,48 +1,28 @@
 <div class="user-info">
-    <h1 class="name">Имя: Александр</h1>
-    <h1 class="lastName">Фамилия: Лобов</h1>
-    <h1 class="role">Роль: Пользователь</h1>
+    <h3 class="name">Имя: Александр</h3>
+    <h3 class="lastName">Фамилия: Лобов</h3>
+    <h3 class="role">Роль: Пользователь</h3>
 </div>
-<table>
-    <tr>
-        <td><input type="checkbox"/></td>
-        <th>Task name</th>
-        <th>Status</th>
-        <th>Edit</th>
-    </tr>
-
-    <tr>
-        <td><input type="checkbox"/></td>
-        <td>task-1</td>
-        <td>completed</td>
-        <td>?</td>
-    </tr>
-    <tr>
-        <td><input type="checkbox"/></td>
-        <td>task-2</td>
-        <td>completed</td>
-        <td>?</td>
-    </tr>
-    <tr>
-        <td><input type="checkbox"/></td>
-        <td>task-2</td>
-        <td>completed</td>
-        <td>?</td>
-    </tr>
-    <tr>
-        <td><input type="checkbox"/></td>
-        <td>task-2</td>
-        <td>completed</td>
-        <td>?</td>
-    </tr>
-    <tr>
-        <td><input type="checkbox"/></td>
-        <td>task-3</td>
-        <td>completed</td>
-        <td>?</td>
-    </tr>
-</table>
+<div *mobxAutorun class="todo-list-container">
+    <div class="todo-list-header">
+        <h1>Список дел</h1>
+    </div>
+    <div class="todo-list">
+        <div class="tab">
+            <button (mySubmit)="selectedTab=0" [class.active]="selectedTab===0">Все задачи</button>
+            <button (mySubmit)="selectedTab=1" [class.active]="selectedTab===1">Выполнено</button>
+        </div>
+        <div class="list">
+            <div *ngFor="let todo of todos" [class.selected] = "todo.checked" [class.completed]="todo.status==='completed'" class="item">
+                <div><input type="checkbox" (change)="todo.checked =!todo.checked"></div>
+                <div class="task-name">{{todo.name}}</div>
+                <div class="status">{{todo.status}}</div>
+                <button (mySubmit)="updateTodo(todo)"><app-icon ic="edit"></app-icon></button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="button-content">
     <button (mySubmit)="appState.showCreateDialog = true">Создать</button>
-    <button>Удалить</button>
+    <button (mySubmit)="deleteTodos()">Удалить</button>
 </div>

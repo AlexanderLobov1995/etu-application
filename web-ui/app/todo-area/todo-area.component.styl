@@ -1,3 +1,40 @@
 app-todo-area
-  table
-    font-size 24px
+  .user-info
+    display: flex
+    justify-content: space-between
+  button
+    border none
+    outline none
+    cursor pointer
+    font-size 16px
+  .tab
+    display flex
+    button
+      padding 10px
+      background-color transparent
+      border-bottom 2px solid #e8e8e8
+    & .active
+      border-color #08b0699e
+      color #08b0699e
+  .list
+    border 2px solid #e8e8e8
+    margin 10px 0
+    .item
+      display flex
+      justify-content space-around
+      align-items center
+      font-size 24px
+      border-bottom 2px solid #e8e8e8
+      button
+        background-color transparent
+        app-icon
+          width 40px
+          height 40px
+          & > *
+            width 20px
+            height 20px
+    & .completed
+      text-decoration line-through
+      color darkgrey
+    & .selected
+      background-color #08b0699e

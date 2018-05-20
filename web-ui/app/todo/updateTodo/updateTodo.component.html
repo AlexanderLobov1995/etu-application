@@ -1,7 +1,11 @@
 <div class="update-todo-container">
     <input [(ngModel)]="todoName" type="text"/>
+    <select [(ngModel)]="status">
+        <option [selected]="status === 'in progress'" value="in progress">in progress</option>
+        <option [selected]="status === 'completed'" value="completed">completed</option>
+    </select>
     <div class="button-container">
-        <button>Обновить</button>
-        <button>Отменить</button>
+        <button (mySubmit)="updateTodo()">Обновить</button>
+        <button (mySubmit)="appState.showUpdateDialog = false">Отменить</button>
     </div>
 </div>
