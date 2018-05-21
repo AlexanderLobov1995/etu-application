@@ -4,13 +4,13 @@
         <app-navigation></app-navigation>
         <div [style.transform]="'translateY('+ navigationState.pageOffset + 'vh)'" class="page-content">
             <div class="page">
-                <div *ngIf="authState.token" class="auth-content">
+                <div *ngIf="!authState.token" class="auth-content">
                     <div class="block-1">
                         <p>Довольно важной задачей при разработке веб-сайтов и веб-приложений есть ограничение доступа к некоторым разделам сайта, например к панели администратора. В теории это достаточно сложный процесс, с трема составляющими - аутентификация, идентификация и авторизация (англ. authentication, identification, authorization).</p>
                     </div>
                     <app-signup></app-signup>
                 </div>
-                <app-todo-area *ngIf="!authState.token"></app-todo-area>
+                <app-todo-area *ngIf="authState.token"></app-todo-area>
             </div>
             <div class="page">
 

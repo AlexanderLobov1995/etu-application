@@ -1,7 +1,7 @@
 <div class="user-info">
-    <h3 class="name">Имя: Александр</h3>
-    <h3 class="lastName">Фамилия: Лобов</h3>
-    <h3 class="role">Роль: Пользователь</h3>
+    <h2 class="name">Имя: Александр</h2>
+    <h2 class="lastName">Фамилия: Лобов</h2>
+    <h2 class="role">Роль: Пользователь</h2>
 </div>
 <div *mobxAutorun class="todo-list-container">
     <div class="todo-list-header">
@@ -17,12 +17,12 @@
                 <div><input type="checkbox" (change)="todo.checked =!todo.checked"></div>
                 <div class="task-name">{{todo.name}}</div>
                 <div class="status">{{todo.status}}</div>
-                <button (mySubmit)="updateTodo(todo)"><app-icon ic="edit"></app-icon></button>
+                <button *ngIf="authState.accessUpdate" (mySubmit)="updateTodo(todo)"><app-icon ic="edit"></app-icon></button>
             </div>
         </div>
     </div>
 </div>
 <div class="button-content">
-    <button (mySubmit)="appState.showCreateDialog = true">Создать</button>
-    <button (mySubmit)="deleteTodos()">Удалить</button>
+    <button *ngIf="authState.accessCreate" (mySubmit)="appState.showCreateDialog = true">Создать</button>
+    <button *ngIf="authState.accessDelete" (mySubmit)="deleteTodos()">Удалить</button>
 </div>

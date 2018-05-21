@@ -5,7 +5,7 @@
     "lastName": "Lobov",
     "username": "alexander",
     "password": "lobov",
-    "audience": "admin"
+    "audience": "user"
   },
   {
     "id": 2,

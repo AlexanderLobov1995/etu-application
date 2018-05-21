@@ -1,6 +1,7 @@
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {SharedModule} from "../shared/shared.module";
+import {AuthInterceptor} from "./auth-interceptor";
 import {AuthState} from "./auth-state";
 import {AuthComponent} from "./auth.component";
 import {AuthService} from "./auth.service";
@@ -16,7 +17,12 @@ import {SignUpComponent} from "./signup/signup.component";
   exports: [LoginComponent, SignUpComponent, AuthComponent],
   providers: [
     AuthService,
-    AuthState
+    AuthState,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ]
 })
 export class AuthModule {

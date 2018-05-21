@@ -6,7 +6,7 @@ app-todo-area
     border none
     outline none
     cursor pointer
-    font-size 16px
+    font-size 18px
   .tab
     display flex
     button
@@ -21,8 +21,9 @@ app-todo-area
     margin 10px 0
     .item
       display flex
-      justify-content space-around
+      justify-content space-between
       align-items center
+      min-height 46px
       font-size 24px
       border-bottom 2px solid #e8e8e8
       button
@@ -33,8 +34,23 @@ app-todo-area
           & > *
             width 20px
             height 20px
+          &:hover
+            background-color #e8e8e8
+            border 1px solid #e8e8e8
+            border-radius 100%
+      input[type="checkbox"]
+        width: 18px
+        height 18px
+        margin 0 18px
+        cursor pointer
     & .completed
       text-decoration line-through
       color darkgrey
     & .selected
       background-color #08b0699e
+  .button-content
+    button
+      background-color transparent
+      border 3px solid #e8e8e8
+      &:hover
+        background-color #e8e8e8

@@ -15,8 +15,8 @@
   ],
   "level": {
     "get": 1,
-    "update": 2,
-    "create": 2,
-    "authorize": 0
+    "update": 1,
+    "create": 1,
+    "delete": 2
   }
 }

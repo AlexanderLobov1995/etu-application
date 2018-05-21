@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from "@angular/core";
 import {NavigationState} from "../navigation-state";
 
 @Component({
@@ -8,7 +8,7 @@ import {NavigationState} from "../navigation-state";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationComponent {
-  constructor(public navigationState: NavigationState) {
+  constructor(public navigationState: NavigationState, private changeDetector: ChangeDetectorRef) {
     window.addEventListener('mousewheel', this.onMouseWheel);
   }
 
@@ -23,12 +23,14 @@ export class NavigationComponent {
   goUp() {
     if (this.navigationState.pageOffset < 0) {
       this.navigationState.pageOffset += 100;
+      this.changeDetector.markForCheck();
     }
   }
 
   goDown() {
     if (this.navigationState.pageOffset > -200) {
       this.navigationState.pageOffset -= 100;
+      this.changeDetector.markForCheck();
     }
   }
 

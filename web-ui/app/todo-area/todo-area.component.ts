@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component} from "@angular/core";
 import {computed, observable} from "mobx-angular";
 import {AppState} from "../app-state";
+import {AuthState} from "../auth/auth-state";
 import {Todo} from "./interfaces";
 import {TodoService} from "./todo.service";
 
@@ -14,7 +15,7 @@ export class TodoAreaComponent {
 
   @observable selectedTab = 0;
 
-  constructor (public appState: AppState, private todoService: TodoService) {
+  constructor (public appState: AppState, public authState: AuthState, private todoService: TodoService) {
     this.todoService.getTodos().then((todos : Todo[]) => {
       appState.fullTodos = todos;
     });

@@ -28,7 +28,7 @@ export class SignUpComponent {
     if (this.authForm.valid) {
       this.authService.login(this.username, this.password)
         .subscribe((token: string) => {
-          jwt.verify(token, 'etu', {audience: 'admin'}, (err: any, decoded: any) => {
+          jwt.verify(token, 'etu', (err: any, decoded: any) => {
             if (decoded) {
               this.authState.token = token;
               this.authState.role = decoded.aud;

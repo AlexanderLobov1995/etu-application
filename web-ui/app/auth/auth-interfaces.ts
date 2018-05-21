@@ -7,5 +7,5 @@ export interface Level {
   get: number,
   update: number,
   create: number,
-  authorize: number
+  delete: number
 }
