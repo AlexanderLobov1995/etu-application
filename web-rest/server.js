@@ -18,7 +18,7 @@ http.createServer((req, res) => {
         const token = jwt.sign({id: user.id, firstname: user.firstName, lastname: user.lastName}, 'etu', {
           audience: user.audience || 'guest',
           header: {typ: 'JWT'},
-          expiresIn: 10
+          expiresIn: 3600
         });
         res.writeHead(200, headers);
         res.end(token);
@@ -42,6 +42,7 @@ const handleTodo = (req, res) => {
     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
     'Access-Control-Allow-Origin': 'http://localhost:8080'
   };
+  const token = (req.headers.authorization || '').replace('Bearer ', '');
   switch (req.method) {
     case 'OPTIONS': {
       res.writeHead(200, headers);
@@ -49,33 +50,61 @@ const handleTodo = (req, res) => {
       break;
     }
     case 'GET': {
-      const todos = service.getTodos(1);
-      res.writeHead(200, headers);
-      res.end(JSON.stringify(todos));
+      jwt.verify(token, 'etu', (err, decoded) => {
+        if (decoded) {
+          const todos = service.getTodos(decoded.id);
+          res.writeHead(200, headers);
+          res.end(JSON.stringify(todos));
+        }else{
+          res.writeHead(401, headers);
+          res.end(JSON.stringify('Unauthorized'));
+        }
+      });
       break;
     }
     case 'POST': {
-      parseFormdata(req, (err, data) => {
-        const todos = service.createTodo(1, data.fields.todoName);
-        res.writeHead(200, headers);
-        res.end(JSON.stringify(todos));
+      jwt.verify(token, 'etu', (err, decoded) => {
+        if (decoded) {
+          parseFormdata(req, (err, data) => {
+            const todos = service.createTodo(decoded.id, data.fields.todoName);
+            res.writeHead(200, headers);
+            res.end(JSON.stringify(todos));
+          });
+        }else{
+          res.writeHead(401, headers);
+          res.end(JSON.stringify('Unauthorized'));
+        }
       });
       break;
     }
     case 'PUT': {
-      parseFormdata(req, (err, data) => {
-        const todos = service.updateTodo(1, data.fields);
-        res.writeHead(200, headers);
-        res.end(JSON.stringify(todos));
+      jwt.verify(token, 'etu', (err, decoded) => {
+        if (decoded) {
+          parseFormdata(req, (err, data) => {
+            const todos = service.updateTodo(decoded.id, data.fields);
+            res.writeHead(200, headers);
+            res.end(JSON.stringify(todos));
+          });
+        }else{
+          res.writeHead(401, headers);
+          res.end(JSON.stringify('Unauthorized'));
+        }
       });
       break;
     }
     case 'DELETE': {
-      parseFormdata(req, (err, data) => {
-        const ids = (url.parse(req.url, true)).query.ids.split(',').map((id)=> +id);
-        const todos = service.deleteTodo(ids);
-        res.writeHead(200, headers);
-        res.end(JSON.stringify(todos));
+      jwt.verify(token, 'etu', (err, decoded) => {
+        if (decoded) {
+          parseFormdata(req, (err, data) => {
+            const ids = (url.parse(req.url, true)).query.ids.split(',').map((id)=> +id);
+            const todos = service.deleteTodo(ids);
+            res.writeHead(200, headers);
+            res.end(JSON.stringify(todos));
+          });
+        }else{
+          res.writeHead(401, headers);
+          res.end(JSON.stringify('Unauthorized'));
+        }
       });
       break;
     }

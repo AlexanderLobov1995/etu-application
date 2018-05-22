@@ -1,11 +1,11 @@
 import {HttpClient, HttpParams,} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {AuthState} from "../auth/auth-state";
 import {Todo} from "./interfaces";
 
 @Injectable()
 export class TodoService {
-  constructor (private httpClient: HttpClient, private authState: AuthState) {}
+  constructor(private httpClient: HttpClient) {
+  }
 
   createTodo(todoName: string) {
     const formData = new FormData();
@@ -28,7 +28,6 @@ export class TodoService {
   }
 
   getTodos() {
-    console.log(this.authState);
-    return this.httpClient.get('http://localhost:8081/todos', {headers: {authorization: 'dddd'}}).toPromise();
+    return this.httpClient.get('http://localhost:8081/todos').toPromise();
   }
 }

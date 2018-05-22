@@ -24,7 +24,12 @@ export class HeaderComponent {
 
   submit(){
     this.appState.showAuthDialog = true;
-    this.menuActive =false;
+    this.menuActive = false;
+  }
+
+  logout() {
+    this.authState.token = '';
+    this.menuActive = false;
   }
 
   closeMenu = () => {

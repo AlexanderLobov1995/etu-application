@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
+import {AppState} from "../../app-state";
 import {AuthState} from "../auth-state";
 import {AuthService} from "../auth.service";
 
@@ -17,8 +18,7 @@ export class LoginComponent {
   username = '';
   password = '';
 
-
-  constructor(public authService: AuthService, private authState: AuthState) {
+  constructor(public authService: AuthService, private authState: AuthState, private appState: AppState) {
   }
 
   login() {
@@ -29,7 +29,7 @@ export class LoginComponent {
             if (decoded) {
               this.authState.token = token;
               this.authState.role = decoded.aud;
-              this.authState.showAuthDialog = false;
+              this.appState.showAuthDialog = false;
             }
             console.log(decoded);
             console.log(err);
