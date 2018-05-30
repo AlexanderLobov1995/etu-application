@@ -13,6 +13,7 @@ import {RootComponent} from './root.component';
 import {SharedModule} from "./shared/shared.module";
 import {TodoAreaComponent} from "./todo-area/todo-area.component";
 import {TodoService} from "./todo-area/todo.service";
+import {LoggerState} from "./todo-logger/logger-state";
 import {TogoLoggerComponent} from "./todo-logger/togo-logger.component";
 import {CreateTodoComponent} from "./todo/createTodo/createTodo.component";
 import {UpdateTodoComponent} from "./todo/updateTodo/updateTodo.component";
@@ -28,7 +29,8 @@ import {UpdateTodoComponent} from "./todo/updateTodo/updateTodo.component";
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     NavigationState,
     AppState,
-    TodoService
+    TodoService,
+    LoggerState
   ],
   bootstrap: [RootComponent]
 })

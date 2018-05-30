@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from "@angular/core";
 import {TodoLoggerRequest, TodoLoggerResponse} from "./logger-interfaces";
 
 @Component({
@@ -6,7 +6,16 @@ import {TodoLoggerRequest, TodoLoggerResponse} from "./logger-interfaces";
   templateUrl: './togo-logger.component.html',
   styleUrls: ['./togo-logger.component.styl']
 })
-export class TogoLoggerComponent {
+export class TogoLoggerComponent implements OnChanges, OnInit{
+  @Input('loggs') loggs = [];
   request: TodoLoggerRequest;
   response: TodoLoggerResponse;
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('keke', changes);
+  }
+
+  ngOnInit() {
+
+  }
 }
