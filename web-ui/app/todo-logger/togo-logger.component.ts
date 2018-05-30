@@ -1,5 +1,10 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from "@angular/core";
-import {TodoLoggerRequest, TodoLoggerResponse} from "./logger-interfaces";
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges
+} from "@angular/core";
 
 @Component({
   selector: 'app-todo-logger',
@@ -8,14 +13,19 @@ import {TodoLoggerRequest, TodoLoggerResponse} from "./logger-interfaces";
 })
 export class TogoLoggerComponent implements OnChanges, OnInit{
   @Input('loggs') loggs = [];
-  request: TodoLoggerRequest;
-  response: TodoLoggerResponse;
+  _loggs = [];
+
+  constructor(){}
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('keke', changes);
+    this._loggs = changes.loggs.currentValue;
   }
 
   ngOnInit() {
+    this._loggs = this.loggs;
+  }
 
+  get filteredLoggs () {
+    return this._loggs.filter((log, index)=> log && (this._loggs.length - index) <= 3)
   }
 }

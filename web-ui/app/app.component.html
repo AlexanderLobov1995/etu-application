@@ -25,7 +25,7 @@
                     <app-signup></app-signup>
                 </div>
                 <app-todo-area *ngIf="authState.token"></app-todo-area>
-                <app-todo-logger [loggs]="[]"></app-todo-logger>
+                <app-todo-logger [loggs]="loggerState.loggs"></app-todo-logger>
             </div>
             <div class="page">
                 <h1>What is JSON Web Token?</h1>
