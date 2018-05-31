@@ -1,7 +1,7 @@
 <span>Authorization Guide</span>
 <div [class.menu-active]="menuActive" class="menu-container">
-    <button (mySubmit)="toggleMenu()" class="menu-button"><app-icon ic="menu"></app-icon></button>
-    <div class="menu" #menu>
+    <button (mySubmit)="toggleMenu()" class="menu-button" #menu><app-icon ic="menu"></app-icon></button>
+    <div class="menu">
         <button *ngIf="!authState.token" (mySubmit)="submit()">Войти</button>
         <button *ngIf="authState.token" (mySubmit)="logout()">Выйти</button>
         <button>Инфо</button>

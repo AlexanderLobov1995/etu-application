@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, ElementRef, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild} from "@angular/core";
 import {AppState} from "../app-state";
 import {AuthState} from "../auth/auth-state";
 
@@ -13,7 +13,8 @@ export class HeaderComponent {
   menuActive = false;
 
   constructor(public authState: AuthState,
-              public appState: AppState){
+              public appState: AppState,
+              public changeDetector: ChangeDetectorRef){
     window.addEventListener('click', this.closeMenu);
   }
 
@@ -24,18 +25,16 @@ export class HeaderComponent {
 
   submit(){
     this.appState.showAuthDialog = true;
-    this.menuActive = false;
   }
 
   logout() {
     this.authState.token = '';
-    this.menuActive = false;
   }
 
-  closeMenu = () => {
-   /* if(!this.menu.nativeElement.contains(event.target) && this.menuActive){
-      console.log('here');
+  closeMenu = (event: any) => {
+    if(!this.menu.nativeElement.contains(event.target) && this.menuActive){
       this.menuActive = false;
-    }*/
+      this.changeDetector.markForCheck();
+    }
   }
 }
