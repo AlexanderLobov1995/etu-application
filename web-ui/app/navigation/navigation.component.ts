@@ -8,17 +8,7 @@ import {NavigationState} from "../navigation-state";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationComponent {
-  constructor(public navigationState: NavigationState, private changeDetector: ChangeDetectorRef) {
-    window.addEventListener('mousewheel', this.onMouseWheel);
-  }
-
-  onMouseWheel = (e: any) => {
-    if (e.wheelDelta > 0) {
-      this.goUp();
-    } else {
-      this.goDown();
-    }
-  };
+  constructor(public navigationState: NavigationState, private changeDetector: ChangeDetectorRef) {}
 
   goUp() {
     if (this.navigationState.pageOffset < 0) {

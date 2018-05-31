@@ -28,44 +28,71 @@
                 <app-todo-logger [loggs]="loggerState.loggs"></app-todo-logger>
             </div>
             <div class="page">
-                <h1>What is JSON Web Token?</h1>
-                <article>JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA.</article>
-                <article>Although JWTs can be encrypted to also provide secrecy between parties, we will focus on signed tokens. Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.</article>
-                <h1>Let's explain some concepts further.</h1>
-                <article>
-                    <ul>
-                        <li><b>Compact:</b> Because of their smaller size, JWTs can be sent through a URL, POST parameter, or inside an HTTP header. Additionally, the smaller size means transmission is fast.</li>
-                        <li><b>Self-contained:</b> The payload contains all the required information about the user, avoiding the need to query the database more than once.</li>
-                    </ul>
-                </article>
-                <h1>When should you use JSON Web Tokens?</h1>
-                <article>
-                    <ul>
-                        <li><b>Authentication:</b> This is the most common scenario for using JWT. Once the user is logged in,
-                            each subsequent request will include the JWT, allowing the user to access routes, services,
-                            and resources that are permitted with that token. Single Sign On is a feature that widely
-                            uses JWT nowadays, because of its small overhead and its ability to be easily used across
-                            different domains.
-                        </li>
-                        <li><b>Information Exchange:</b> JSON Web Tokens are a good way of securely
-                            transmitting information between parties. Because JWTs can be signed—for example,
-                            using public/private key pairs—you can be sure the senders are who they say they are.
-                            Additionally, as the signature is calculated using the header and the payload, you can also verify that the content hasn't been tampered with.
-                        </li>
-                    </ul>
-                </article>
-                <h1>What is the JSON Web Token structure?</h1>
-                <article>
-                    In its compact form, JSON Web Tokens consist of three parts separated by dots (.), which are:
-                    <ul>
-                        <li>Header</li>
-                        <li>Payload</li>
-                        <li>Signature</li>
-                    </ul>
-                    Therefore, a JWT typically looks like the following.
-                    <b>xxxxx.yyyyy.zzzzz</b>
-                </article>
-                <article>Read more: <a target="_blank" href="https://jwt.io/introduction/">https://jwt.io/introduction/</a></article>
+                <h1>Что такое JSON Web Token?</h1>
+                <p>JSON Web Token (JWT) является открытым стандартом (RFC 7519), который определяет компактный и автономный способ для безопасной передачи информации между сторонами как объект JSON. Эта информация может быть проверена и доверена, поскольку она имеет цифровую подпись. JWT могут быть подписаны с использованием секретного (с алгоритмом HMAC) или пары открытого / закрытого ключей с использованием RSA.</p>
+                <h1>Поясним некоторые концепции.</h1>
+                <ul>
+                    <li><b>Компактность:</b> Из-за их меньшего размера JWT можно отправлять через URL-адрес, параметр POST или внутри HTTP-заголовка. Кроме того, меньший размер означает, что передача выполняется быстро.</li>
+                    <li><b>Автономный:</b> Payload содержит всю необходимую информацию о пользователе, избегая необходимости запрашивать базу данных более одного раза.</li>
+                </ul>
+                <h1>Когда должны использовать JSON Web Tokens?</h1>
+                <ul>
+                    <li><b>Аутентификация:</b> Это самый распространенный сценарий использования JWT. Как только пользователь войдет в систему, каждый последующий запрос будет включать JWT, позволяя пользователю получать доступ к роутам, сервисам, и ресурсы, которые разрешены с помощью этого токена. Single Sign On - это возможность, которая широко использует JWT в настоящее время, из-за его небольших накладных расходов и его способности легко использоваться в разные домены.
+                    </li>
+                    <li><b>Обмен информацией:</b> Веб-токены JSON - это хороший способ безопасного передавая информацию между сторонами. Поскольку JWT можно подписать, например, используя пары открытого / закрытого ключа - вы можете быть уверены, что отправители - это те, кем они говорят. Кроме того, поскольку подпись вычисляется с использованием header  и payload, вы также можете убедиться, что контент не был изменен.
+                    </li>
+                </ul>
+                <h1>Структура JSON Web Tokens</h1>
+                <p>JSON Web Tokens состоит из трех частей, разделенных точками (.):</p>
+                <ul>
+                    <li>Header</li>
+                    <li>Payload</li>
+                    <li>Signature</li>
+                </ul>
+                <p>JWT обычно выглядит следующим образом.</p>
+                <b>xxxxx.yyyyy.zzzzz</b>
+                <h2>Header</h2>
+                <p>Header обычно состоит из двух частей: типа токена, который является JWT, и используемого алгоритма хеширования, такого как HMAC SHA256 или RSA.</p>
+                <pre>
+                        <code>
+{{'{'}}
+    "alg": "HS256",
+    "typ": "JWT"
+{{'}'}}
+                        </code>
+                 </pre>
+                <p>Затем этот JSON кодируется <b>Base64Url</b>, чтобы сформировать первую часть JWT.</p>
+                <h2>Payload</h2>
+                <p>Вторая часть токена - payload, которая содержит формулы изобретения. Claims - это утверждения об объекте (обычно, пользователь) и дополнительных метаданных. Существует три типа claims: зарегистрированные, публичные и частные claims.</p>
+                <ul>
+                    <li><b>Зарегистрированные claims:</b> это набор предопределенных claims, которые не являются обязательными, но рекомендуемыми, для предоставления набора полезных, совместимых claims. Некоторые из них: iss (issuer), exp (expiration time), sub (subject), aud (audience) и другие.</li>
+                    <li><b>Публичные claims:</b> они могут быть определены по желанию теми, кто использует JWT. Но чтобы избежать коллизий, они должны быть определены в реестре веб-токенов IANA JSON или быть определены как URI, который содержит пространство с устойчивостью к конфликтам.</li>
+                    <li><b>Частные claims:</b> Это индивидуальные требования, созданные для обмена информацией между сторонами, которые согласны с их использованием, и не являются ни зарегистрированными, ни публичными требованиями.</li>
+                </ul>
+                <p>Пример payload может быть:</p>
+                <pre>
+                        <code>
+{{'{'}}
+    "sub": "1234567890",
+    "name": "John Doe",
+    "admin": true
+{{'}'}}
+                        </code>
+                 </pre>
+                <p>Затем payload кодируется <b>Base64Url</b> для формирования второй части веб-маркера JSON.</p>
+                <h2>Signature</h2>
+                <p>Чтобы создать часть подписи, вы должны взять закодированный заголовок, закодированную полезную нагрузку, секрет, алгоритм, указанный в заголовке, и подписать это.</p>
+                <p>Например, если вы хотите использовать алгоритм HMAC SHA256, подпись будет создана следующим образом:</p>
+                <pre>
+                        <code>
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  secret)
+                        </code>
+                 </pre>
+                <p>Подпись используется для проверки того, что сообщение не было изменено на этом пути, а в случае токенов, подписанных с закрытым ключом, также может убедиться, что отправителем JWT является тот, кто это говорит.</p>
+                <p>Подробная информация: <a target="_blank" href="https://jwt.io/introduction/">https://jwt.io/introduction/</a></p>
             </div>
             <div class="page">
                 <h1>Ролевая политика безопасности</h1>
