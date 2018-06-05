@@ -13,9 +13,9 @@
         </div>
         <div class="res">
             <span><b>Response: ==></b></span>
-            <span class="body long">
-                {{log.response.body}}
-            </span>
+            <pre class="body long">
+                {{log.response.body | json}}
+            </pre>
         </div>
     </div>
 </div>

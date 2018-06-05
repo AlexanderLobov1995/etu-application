@@ -22,4 +22,8 @@ export class AppComponent {
       authState.level = res.level;
     });
   }
+
+  onClosePopup(){
+    this.appState.hideDialog();
+  }
 }

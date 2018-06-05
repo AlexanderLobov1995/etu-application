@@ -1,4 +1,4 @@
-<div [class.hidden]="!show" class="popup-container">
+<div [class.hidden]="!show" (click)="closeMenu($event)" class="popup-container">
     <div class="popup-content" #menu>
         <ng-content></ng-content>
     </div>

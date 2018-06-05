@@ -2,7 +2,6 @@
     <div class="tab">
         <button (mySubmit)="selectedTab=0" [class.active]="selectedTab===0">Войти</button>
         <button (mySubmit)="selectedTab=1" [class.active]="selectedTab===1">Регистрация</button>
-        <button (mySubmit)="appState.showAuthDialog=false" class="auth-close">X</button>
     </div>
     <div class="tab-content-container">
         <div *ngIf="selectedTab === 0" class="tab-content">

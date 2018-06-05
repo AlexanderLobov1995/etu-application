@@ -15,4 +15,9 @@ export class AppState {
     return this.showAuthDialog || this.showCreateDialog || this.showUpdateDialog;
   }
 
+  hideDialog() {
+    this.showAuthDialog = false;
+    this.showCreateDialog = false;
+    this.showUpdateDialog = false;
+  }
 }

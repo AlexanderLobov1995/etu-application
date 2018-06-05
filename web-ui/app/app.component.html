@@ -103,7 +103,7 @@ HMACSHA256(
         </div>
     </div>
 </div>
-<app-popup>
+<app-popup (close)="onClosePopup()">
     <app-auth *ngIf="appState.showAuthDialog"></app-auth>
     <app-create-todo *ngIf="appState.showCreateDialog"></app-create-todo>
     <app-update-todo *ngIf="appState.showUpdateDialog" [todo]="appState.updateTodo"></app-update-todo>
