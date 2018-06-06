@@ -9,3 +9,9 @@ export interface Level {
   create: number,
   delete: number
 }
+
+export interface User {
+  firstname: string,
+  lastname: string,
+  role: string,
+}

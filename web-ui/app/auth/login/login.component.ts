@@ -29,6 +29,7 @@ export class LoginComponent {
             if (decoded) {
               this.authState.token = token;
               this.authState.role = decoded.aud;
+              this.authState.user = decoded.user;
               this.appState.showAuthDialog = false;
             }
             console.log(decoded);

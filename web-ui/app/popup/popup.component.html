@@ -1,4 +1,5 @@
 <div [class.hidden]="!show" (click)="closeMenu($event)" class="popup-container">
+    <app-icon ic="cross"></app-icon>
     <div class="popup-content" #menu>
         <ng-content></ng-content>
     </div>

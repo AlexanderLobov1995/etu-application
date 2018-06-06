@@ -7,6 +7,7 @@ export class AppState {
   @observable showAuthDialog = false;
   @observable showCreateDialog = false;
   @observable showUpdateDialog = false;
+  @observable showLogger = false;
   @observable fullTodos: Todo[] = [];
 
   updateTodo: Todo;

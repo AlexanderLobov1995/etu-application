@@ -1,11 +1,12 @@
 import {Injectable} from "@angular/core";
 import {computed, observable} from "mobx-angular";
-import {Level, Role} from "./auth-interfaces";
+import {Level, Role, User} from "./auth-interfaces";
 
 @Injectable()
 export class AuthState {
   @observable roles : Role[];
   @observable level: Level;
+  @observable user: User;
 
   showAuthDialog = false;
 

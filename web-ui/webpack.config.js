@@ -28,7 +28,7 @@ module.exports = {
         loader: 'html-loader'
       },
       {
-        test: /\.(png|ico|woff)$/,
+        test: /\.(png|jpg|ico|woff)$/,
         loader: 'file-loader'
       },
       {

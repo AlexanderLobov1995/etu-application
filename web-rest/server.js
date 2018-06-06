@@ -15,7 +15,12 @@ http.createServer((req, res) => {
     parseFormdata(req, (err, data) => {
       const user = service.login(data.fields.username, data.fields.password);
       if (user) {
-        const token = jwt.sign({id: user.id, firstname: user.firstName, lastname: user.lastName}, 'etu', {
+        const token = jwt.sign({id: user.id, user: {
+              firstname: user.firstName,
+              lastname: user.lastName,
+              role: user.audience || 'guest'
+            }
+          }, 'etu', {
           audience: user.audience || 'guest',
           header: {typ: 'JWT'},
           expiresIn: 3600

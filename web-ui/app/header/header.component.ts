@@ -14,16 +14,16 @@ export class HeaderComponent {
 
   constructor(public authState: AuthState,
               public appState: AppState,
-              public changeDetector: ChangeDetectorRef){
+              public changeDetector: ChangeDetectorRef) {
     window.addEventListener('click', this.closeMenu);
   }
 
-  toggleMenu(){
+  toggleMenu() {
     console.log('toggle');
-    this.menuActive =!this.menuActive;
+    this.menuActive = !this.menuActive;
   }
 
-  submit(){
+  submit() {
     this.appState.showAuthDialog = true;
   }
 
@@ -32,7 +32,7 @@ export class HeaderComponent {
   }
 
   closeMenu = (event: any) => {
-    if(!this.menu.nativeElement.contains(event.target) && this.menuActive){
+    if (!this.menu.nativeElement.contains(event.target) && this.menuActive) {
       this.menuActive = false;
       this.changeDetector.markForCheck();
     }
