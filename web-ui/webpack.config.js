@@ -6,8 +6,7 @@ const HtmlPlugin = require('html-webpack-plugin');
 module.exports = {
 
   entry: {
-    app: './app/main.ts',
-    vendor: './app/vendor.ts'
+    app: './app/main.ts'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -40,7 +39,18 @@ module.exports = {
   },
   plugins: [
     new webpack.ContextReplacementPlugin(/angular(\\|\/)core(\\|\/)@angular/, path.resolve(__dirname, 'app'), {}),
-    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'common',
+      minChunks (module) {
+        // any required modules inside node_modules are extracted to vendor
+        return (
+          module.resource &&
+          /\.js$/.test(module.resource) &&
+          module.resource.indexOf(
+            path.join(__dirname, 'node_modules')
+          ) === 0
+        )}
+    }),
     new HtmlPlugin({template: './index.html'})
   ]
 };
