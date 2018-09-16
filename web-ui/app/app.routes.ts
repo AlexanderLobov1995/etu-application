@@ -1,6 +1,6 @@
-import { Routes } from '@angular/router';
-import { OtherComponent } from './other-component/other-component.component';
-import { AppComponent } from './app.component';
+import {Routes} from '@angular/router';
+import {AppComponent} from './app.component';
+import {TestPageComponent} from "./test-pages/test-page.component";
 
 export const appRoutes: Routes = [
   {
@@ -8,7 +8,7 @@ export const appRoutes: Routes = [
     component: AppComponent
   },
   {
-    path: 'other-component',
-    component: OtherComponent
+    path: 'test-page',
+    component: TestPageComponent
   }
 ];
