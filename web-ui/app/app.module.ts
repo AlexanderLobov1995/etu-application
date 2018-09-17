@@ -20,13 +20,15 @@ import {LoggerState} from "./todo-logger/logger-state";
 import {TogoLoggerComponent} from "./todo-logger/togo-logger.component";
 import {CreateTodoComponent} from "./todo/createTodo/createTodo.component";
 import {UpdateTodoComponent} from "./todo/updateTodo/updateTodo.component";
+import {UiKitModule} from "./ui-kit/ui-kit.module";
 
 @NgModule({
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     AuthModule,
-    SharedModule
+    SharedModule,
+    UiKitModule
   ],
   declarations: [AppComponent, RootComponent, NavigationComponent, HeaderComponent, PopupComponent, CreateTodoComponent, UpdateTodoComponent, TodoAreaComponent, TogoLoggerComponent, TestPageComponent],
   providers: [
