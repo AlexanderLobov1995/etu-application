@@ -1,0 +1,13 @@
+<div [formGroup]="datepickerFormGroup">
+    <input type="text" [textMask]="{mask: mask}" formControlName="input">
+    <span>{{inputValue}}</span>
+    <div class="datepicker-popup">
+        <div class="days-header">
+            <div *ngFor="let day of days" class="day-name">
+                {{day}}
+            </div>
+        </div>
+        <hr/>
+
+    </div>
+</div>

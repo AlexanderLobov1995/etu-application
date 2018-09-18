@@ -20,6 +20,7 @@
     "@types/jsonwebtoken": "^7.2.6",
     "@types/node": "^7.0.61",
     "angular2-template-loader": "^0.6.2",
+    "angular2-text-mask": "^9.0.0",
     "core-js": "^2.5.5",
     "css-loader": "^0.28.11",
     "file-loader": "^0.11.1",
