@@ -1,13 +1,28 @@
-<div [formGroup]="datepickerFormGroup">
+<div [formGroup]="datepickerFormGroup" class="datepicker">
     <input type="text" [textMask]="{mask: mask}" formControlName="input">
     <span>{{inputValue}}</span>
-    <div class="datepicker-popup">
+    <div class="datepicker-calendar">
+        <div class="toggler">
+            <div class="toggler-full-month">
+                <div class="date-info">
+                    Dezember 2017
+                </div>
+                <div class="arrow arrow-down"></div>
+            </div>
+            <div class="toggler-month">
+                <div class="arrow arrow-back"></div>
+                <div class="arrow arrow-next"></div>
+            </div>
+        </div>
         <div class="days-header">
-            <div *ngFor="let day of days" class="day-name">
-                {{day}}
+            <div *ngFor="let headerDay of headerDays" class="day-name">
+                {{headerDay}}
             </div>
         </div>
         <hr/>
-
+        <div class="days-content">
+            <div *ngFor="let offset of offsets" class="offset">{{offset}}</div>
+            <div *ngFor="let day of days" class="day-item"><div class="day-value">{{day}}</div></div>
+        </div>
     </div>
 </div>

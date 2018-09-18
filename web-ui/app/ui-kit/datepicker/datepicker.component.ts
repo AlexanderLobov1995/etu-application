@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 export type ViewTypes = 'month' | 'year' | 'multi-year';
-export type DayTypes = 'sun' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat';
+export type DayTypes = 'Mo'| 'Di'| 'Mi'| 'Do'| 'Fr'| 'Sa'| 'So';
 
 @Component({
   selector: 'app-datepicker',
@@ -14,7 +14,12 @@ export class DatepickerComponent implements OnInit{
   @Input() startView: ViewTypes = 'month';
 
   mask = [ /\d/, /\d/, '-',  /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
-  days: DayTypes[] = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+  headerDays: DayTypes[] = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+
+  days: number[] = [];
+  offsets: string[] = [];
+
+  month: number;
 
 
   datepickerFormGroup: FormGroup
@@ -25,6 +30,8 @@ export class DatepickerComponent implements OnInit{
       'input': new FormControl('', [
         Validators.required
       ])
+
+
     });
     this.calculateMonthView();
   }
@@ -38,13 +45,18 @@ export class DatepickerComponent implements OnInit{
   daysInMonth(date: Date) {
     const year = date.getFullYear();
     const month = date.getMonth();
-    return 32 - new Date(year, month, 32).getDate();
+    return new Date(year, month+ 1, 0).getDate();
   }
 
   firstDayInMonth(date: Date){
+    console.log(date)
     const year = date.getFullYear();
     const month = date.getMonth();
-    return new Date(year, month, 1).getDay();
+    let day = new Date(year, month, 1).getDay();
+    if (day === 0){
+      day = 7;
+    }
+    return day;
   }
 
   calculateMonthView(){
@@ -54,8 +66,13 @@ export class DatepickerComponent implements OnInit{
     console.log(daysInMonth)
     const firstDay = this.firstDayInMonth(currentDate);
     console.log(firstDay)
-    for (let i = 0; i < daysInMonth; i++){
-      console.log(Math.ceil((firstDay + i + 1)/7))
+    const offsetDays = firstDay === 0 ? firstDay: firstDay - 1;
+    console.log(offsetDays)
+    for (let offsetDay = 0; offsetDay < offsetDays; offsetDay++){
+      this.offsets.push('');
+    }
+    for (let day = 1; day <= daysInMonth; day++){
+      this.days.push(day);
     }
   }
 
