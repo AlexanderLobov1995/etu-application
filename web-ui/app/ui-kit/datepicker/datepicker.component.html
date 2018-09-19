@@ -1,28 +1,31 @@
 <div [formGroup]="datepickerFormGroup" class="datepicker">
     <input type="text" [textMask]="{mask: mask}" formControlName="input">
     <span>{{inputValue}}</span>
-    <div class="datepicker-calendar">
+    <div [ngSwitch]="currentView" class="datepicker-calendar">
         <div class="toggler">
             <div class="toggler-full-month">
                 <div class="date-info">
-                    {{monthView}} {{yearView}}
+                    {{monthWithYear}}
                 </div>
-                <div class="arrow arrow-down"></div>
+                <div (click)="toggleView()" class="arrow arrow-down"></div>
             </div>
             <div class="toggler-month">
                 <div (click)="goBack()" class="arrow arrow-back"></div>
                 <div (click)="goNext()" class="arrow arrow-next"></div>
             </div>
         </div>
-        <div class="days-header">
-            <div *ngFor="let header of headers" class="day-name">
-                {{header}}
+        <div *ngIf="isMonthCurrentView" class="days-header">
+            <div *ngFor="let headerDay of headerDays" class="day-name">
+                {{headerDay}}
             </div>
         </div>
         <hr/>
-        <div class="days-content">
+        <div *ngSwitchCase="'month'" class="month-content">
             <div *ngFor="let offset of offsets" class="offset">{{offset}}</div>
             <div *ngFor="let day of days" class="day-item"><div class="day-value">{{day}}</div></div>
+        </div>
+        <div *ngSwitchCase="'year'" class="year-content">
+            <div *ngFor="let month of months" class="month-item"><div class="month-value">{{month}}</div></div>
         </div>
     </div>
 </div>

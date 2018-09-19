@@ -1,55 +1,66 @@
 $day-item-size = 60px;
+$month-item-size = 150px;
 $value-fontsize = 28px;
 $day-header-fontsize = 20px;
 $day-name-color = #808080;
 $black = #000000;
 $magenta = #E20074;
-$dayCount = 7;
+$monthColumns = 7;
+$yearColumns = 3;
 $container-box-shadow = 0 16px 25px rgba(1,0,0,0.16);
 $container-width = 480px;
 app-datepicker
   .datepicker
-    background-color #FFFFFF
+    background-color: #FFFFFF
     box-shadow: $container-box-shadow
-    width $container-width
-    margin-left 50px
-  .days-header, .days-content
+    width: $container-width
+    margin-left: 50px
+  .days-header, .month-content
     display: grid
-    grid-template-columns: repeat($dayCount, $day-item-size)
+    grid-template-columns: repeat($monthColumns, $day-item-size)
   .day-value, .day-name
-    text-align center
+    text-align: center
   .day-item
-    height $day-item-size
-    display flex
+    height: $day-item-size
+    display: flex
   .day-value
-    font-size $value-fontsize
-    margin auto
+    font-size: $value-fontsize
+    margin: auto
   .day-name
-    font-size $day-header-fontsize
-    color $day-name-color
+    font-size: $day-header-fontsize
+    color: $day-name-color
+  .year-content
+    display: grid
+    grid-template-columns: repeat($yearColumns, $month-item-size)
+  .month-item
+    height: $month-item-size
+    display: flex
+  .month-value
+    font-size: $value-fontsize
+    margin: auto
   .arrow
-    width 15px
-    height 15px
-    transform rotate(45deg)
-    border 4px solid transparent
+    width: 15px
+    height: 15px
+    transform: rotate(45deg)
+    border: 4px solid transparent
   .arrow-down
-    border-right-color $magenta
-    border-bottom-color $magenta
+    border-right-color: $magenta
+    border-bottom-color: $magenta
   .arrow-next
-    border-right-color $magenta
-    border-top-color $magenta
+    border-right-color: $magenta
+    border-top-color: $magenta
   .arrow-back
-    border-left-color $magenta
-    border-bottom-color $magenta
+    border-left-color: $magenta
+    border-bottom-color: $magenta
   .toggler
-    display flex
-    justify-content space-between
-    padding 33px 28px 24px 20px
+    display: flex
+    justify-content: space-between
+    padding: 33px 28px 24px 20px
   .toggler-full-month
-    display flex
+    display: flex
     .date-info
-      font-size $value-fontsize
-      color $black
-      margin-right 30px
+      font-size: $value-fontsize
+      color: $black
+      margin-right: 30px
   .toggler-month
-    display flex
+    display: flex
