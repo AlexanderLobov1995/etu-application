@@ -5,18 +5,18 @@
         <div class="toggler">
             <div class="toggler-full-month">
                 <div class="date-info">
-                    Dezember 2017
+                    {{monthView}} {{yearView}}
                 </div>
                 <div class="arrow arrow-down"></div>
             </div>
             <div class="toggler-month">
-                <div class="arrow arrow-back"></div>
-                <div class="arrow arrow-next"></div>
+                <div (click)="goBack()" class="arrow arrow-back"></div>
+                <div (click)="goNext()" class="arrow arrow-next"></div>
             </div>
         </div>
         <div class="days-header">
-            <div *ngFor="let headerDay of headerDays" class="day-name">
-                {{headerDay}}
+            <div *ngFor="let header of headers" class="day-name">
+                {{header}}
             </div>
         </div>
         <hr/>
