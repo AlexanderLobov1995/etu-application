@@ -24,12 +24,13 @@ export class DatepickerComponent implements OnInit {
   mask = [/\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   defaultHeaderDays = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
   months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+  offsetDay: number;
 
   days: number[] = [];
-  offsets: string[] = [];
 
   month = 0;
   year = 2018;
+  selectedDay: number;
 
   datepickerFormGroup: FormGroup;
 
@@ -68,10 +69,7 @@ export class DatepickerComponent implements OnInit {
   calculateDaysView(date: Date) {
     const daysInMonth = this.daysInMonth(date);
     const firstDay = this.firstDayInMonth(date);
-    const offsetDays = this.calculateOffsetDays(firstDay);
-    for (let offsetDay = 0; offsetDay < offsetDays; offsetDay++) {
-      this.offsets.push('');
-    }
+    this. offsetDay = this.calculateOffsetDays(firstDay);
     for (let day = 1; day <= daysInMonth; day++) {
       this.days.push(day);
     }
@@ -91,7 +89,6 @@ export class DatepickerComponent implements OnInit {
       this.goBackYear();
     }
     this.days = [];
-    this.offsets = [];
     this.calculateDaysView(new Date(this.year, this.month, 1));
   }
 
@@ -102,7 +99,6 @@ export class DatepickerComponent implements OnInit {
       this.goNextYear();
     }
     this.days = [];
-    this.offsets = [];
     this.calculateDaysView(new Date(this.year, this.month, 1));
   }
 
@@ -140,6 +136,11 @@ export class DatepickerComponent implements OnInit {
     }
   }
 
+  selectDay(day: number){
+    this.selectedDay = day;
+    console.log(day);
+  }
+
   get monthWithYear() {
     return this.$currentView === 'month' ? this.months[this.month] + ' ' + this.year : this.year;
   }
@@ -156,6 +157,14 @@ export class DatepickerComponent implements OnInit {
 
   get currentView() {
     return this.$currentView;
+  }
+
+  get offsetDays(){
+    const offsets: string[] = [];
+    for (let offset = 0; offset < this.offsetDay; offset++) {
+      offsets.push('');
+    }
+    return offsets;
   }
 
   get inputValue() {
