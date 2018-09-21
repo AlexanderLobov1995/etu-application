@@ -1,4 +1,13 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from "@angular/core";
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+  ViewChild
+} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 export type ViewTypes = 'month' | 'year';
@@ -14,27 +23,49 @@ export const COUNT_DAY_OF_WEEK = 7;
   styleUrls: ['./datepicker.component.styl'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatepickerComponent implements OnInit {
+export class DatepickerComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('input')
+  input: ElementRef;
+
+  @ViewChild('datepickerContainer')
+  datepickerContainer: ElementRef;
 
   @Input() firstDayOfWeek = 1;
   @Input() startView: ViewTypes = 'month';
 
   $currentView: ViewTypes;
 
-  mask = [/\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  mask = [/\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
   defaultHeaderDays = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
   months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
   offsetDay: number;
 
   days: number[] = [];
 
-  month = 0;
-  year = 2018;
+  currentMonth = 0;
+  currentYear = 2018;
   selectedDay: number;
+  selectedMonth: number;
+  selectedYear: number;
+
+  isActive = false;
 
   datepickerFormGroup: FormGroup;
 
-  ngOnInit(): void {
+  @HostListener('document:click', ['$event'])
+  clickout(event: Event) {
+    if (!this.datepickerContainer.nativeElement.contains(event.target)) {
+      this.isActive = false;
+      this.input.nativeElement.blur();
+    }
+  }
+
+  onInputFocus(){
+    this.isActive = true;
+  }
+
+  ngOnInit() {
 
     this.datepickerFormGroup = new FormGroup({
       'input': new FormControl('', [
@@ -49,9 +80,21 @@ export class DatepickerComponent implements OnInit {
   initCalendar() {
     this.$currentView = this.startView;
     const currentDate = new Date();
-    this.month = currentDate.getMonth();
-    this.year = currentDate.getFullYear();
+    this.currentMonth = currentDate.getMonth();
+    this.currentYear = currentDate.getFullYear();
     this.calculateDaysView(currentDate);
+  }
+
+  buildInputDate(){
+    // const day = this.selectedDay || 'DD';
+    // const month = this.selectedDay || 'MM';
+    // const year = this.selectedYear || 'YYYY';
+    // const date = [day, month, year].join('.');
+    // this.input.nativeElement.value = date;
+  }
+
+  onTextChanged(){
+    this.buildInputDate();
   }
 
   daysInMonth(date: Date) {
@@ -89,7 +132,7 @@ export class DatepickerComponent implements OnInit {
       this.goBackYear();
     }
     this.days = [];
-    this.calculateDaysView(new Date(this.year, this.month, 1));
+    this.calculateDaysView(new Date(this.currentYear, this.currentMonth, 1));
   }
 
   goNext() {
@@ -99,33 +142,33 @@ export class DatepickerComponent implements OnInit {
       this.goNextYear();
     }
     this.days = [];
-    this.calculateDaysView(new Date(this.year, this.month, 1));
+    this.calculateDaysView(new Date(this.currentYear, this.currentMonth, 1));
   }
 
   goBackMonth() {
-    if (this.month === FIRST_MONTH) {
-      this.month = LAST_MONTH;
-      this.year -= 1;
+    if (this.currentMonth === FIRST_MONTH) {
+      this.currentMonth = LAST_MONTH;
+      this.currentYear -= 1;
     } else {
-      this.month -= 1;
+      this.currentMonth -= 1;
     }
   }
 
   goNextMonth() {
-    if (this.month === LAST_MONTH) {
-      this.month = FIRST_MONTH;
-      this.year += 1;
+    if (this.currentMonth === LAST_MONTH) {
+      this.currentMonth = FIRST_MONTH;
+      this.currentYear += 1;
     } else {
-      this.month += 1;
+      this.currentMonth += 1;
     }
   }
 
   goBackYear() {
-    this.year -= 1;
+    this.currentYear -= 1;
   }
 
   goNextYear() {
-    this.year += 1;
+    this.currentYear += 1;
   }
 
   toggleView() {
@@ -138,11 +181,23 @@ export class DatepickerComponent implements OnInit {
 
   selectDay(day: number){
     this.selectedDay = day;
-    console.log(day);
+    this.selectedMonth = this.currentMonth;
+    this.selectedYear = this.currentYear;
+    this.isActive = false;
+      console.log(day);
+  }
+
+  selectMonth(month: number){
+    console.log(month)
+    this.currentMonth = month;
+  }
+
+  isSelectedDate(day: number){
+    return this.selectedDay === day && this.selectedMonth === this.currentMonth && this.selectedYear === this.currentYear;
   }
 
   get monthWithYear() {
-    return this.$currentView === 'month' ? this.months[this.month] + ' ' + this.year : this.year;
+    return this.$currentView === 'month' ? this.months[this.currentMonth] + ' ' + this.currentYear : this.currentYear;
   }
 
   get headerDays() {
@@ -168,9 +223,15 @@ export class DatepickerComponent implements OnInit {
   }
 
   get inputValue() {
-    const input = this.datepickerFormGroup.get('input');
-    console.log(input && input.value);
-    return input && input.value || '';
+    return this.formControl.value;
+  }
+
+  get formControl() {
+    return this.datepickerFormGroup.controls['input'];
+  }
+
+  ngAfterViewInit(): void {
+
   }
 
 }

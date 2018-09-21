@@ -1,31 +1,37 @@
-<div [formGroup]="datepickerFormGroup" class="datepicker">
-    <input type="text" [textMask]="{mask: mask}" formControlName="input">
-    <span>{{inputValue}}</span>
-    <div [ngSwitch]="currentView">
-        <div class="toggler">
-            <div class="toggler-full-month">
-                <div class="date-info">
-                    {{monthWithYear}}
+<div [class.active]="isActive" [formGroup]="datepickerFormGroup" class="datepicker">
+    <div #datepickerContainer>
+        <input type="text"
+               [textMask]="{mask: mask}"
+               (focus)="onInputFocus()"
+               (keyup)="onTextChanged()"
+               formControlName="input"
+               class="input" #input>
+        <div *ngIf="isActive" [ngSwitch]="currentView">
+            <div class="toggler">
+                <div (click)="toggleView()" class="toggler-full-month">
+                    <div class="date-info">
+                        {{monthWithYear}}
+                    </div>
+                    <div class="arrow arrow-down"></div>
                 </div>
-                <div (click)="toggleView()" class="arrow arrow-down"></div>
+                <div class="toggler-month">
+                    <div (click)="goBack()" class="arrow arrow-back"></div>
+                    <div (click)="goNext()" class="arrow arrow-next"></div>
+                </div>
             </div>
-            <div class="toggler-month">
-                <div (click)="goBack()" class="arrow arrow-back"></div>
-                <div (click)="goNext()" class="arrow arrow-next"></div>
+            <div *ngIf="isMonthCurrentView" class="days-header">
+                <div *ngFor="let headerDay of headerDays" class="day-name">
+                    {{headerDay}}
+                </div>
             </div>
-        </div>
-        <div *ngIf="isMonthCurrentView" class="days-header">
-            <div *ngFor="let headerDay of headerDays" class="day-name">
-                {{headerDay}}
+            <hr/>
+            <div *ngSwitchCase="'month'" class="month-content">
+                <div *ngFor="let offset of offsetDays" class="offset-day">{{offset}}</div>
+                <div *ngFor="let day of days" [class.selected-item]="isSelectedDate(day)" (click)="selectDay(day)" class="day-item"><div class="day-value">{{day}}</div></div>
             </div>
-        </div>
-        <hr/>
-        <div *ngSwitchCase="'month'" class="month-content">
-            <div *ngFor="let offset of offsetDays" class="offset-day">{{offset}}</div>
-            <div *ngFor="let day of days" [class.selected-item]="day === selectedDay" (click)="selectDay(day)" class="day-item"><div class="day-value">{{day}}</div></div>
-        </div>
-        <div *ngSwitchCase="'year'" class="year-content">
-            <div *ngFor="let month of months" class="month-item"><div class="month-value">{{month}}</div></div>
+            <div *ngSwitchCase="'year'" class="year-content">
+                <div *ngFor="let month of months, let i = index" [class.selected-item]="i === currentMonth" (click)="selectMonth(i)" class="month-item"><div class="month-value">{{month}}</div></div>
+            </div>
         </div>
     </div>
 </div>

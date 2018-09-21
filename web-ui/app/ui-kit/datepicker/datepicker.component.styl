@@ -1,18 +1,21 @@
-$item-size = 60px;
-$value-fontsize = 28px;
-$day-header-fontsize = 20px;
+$item-size = 90px / 1.5;
+$value-fontsize = 42px / 1.5;
+$day-header-fontsize = 30px / 1.5;
 $day-name-color = #808080;
 $black = #000000;
 $magenta = #E20074;
 $grey = #F2F2F2;
+$dark-grey = #808080;
 $monthColumns = 7;
 $yearColumns = 3;
 $container-box-shadow = 0 10.7px 16.7px rgba(1,0,0,0.16);
-$container-width = 480px;
+$container-width = 720px / 1.5;
+$input-padding-size = 42px / 1.5;
+$input-inactive-border-size = 1px / 1.5;
+$input-active-border-size = 3px / 1.5;
 app-datepicker
   .datepicker
     background-color: #FFFFFF
-    box-shadow: $container-box-shadow
     width: $container-width
     user-select: none
     overflow: hidden
@@ -70,18 +73,35 @@ app-datepicker
   .arrow-next
     border-right-color: $magenta
     border-top-color: $magenta
+    cursor: pointer
   .arrow-back
     border-left-color: $magenta
     border-bottom-color: $magenta
+    cursor: pointer
   .toggler
     display: flex
     justify-content: space-between
     padding: 33px 20px 24px 20px
   .toggler-full-month
     display: flex
+    cursor pointer
     .date-info
       font-size: $value-fontsize
       color: $black
       margin-right: 30px
   .toggler-month
     display: flex
+  .input
+    width: 100%
+    height :$item-size
+    font-size: $value-fontsize
+    box-sizing: border-box
+    padding-left: $input-padding-size;
+    outline: none;
+    border: $input-inactive-border-size solid $dark-grey
+    background-color: $grey
+  .active
+    box-shadow: $container-box-shadow
+    .input
+      border: $input-active-border-size solid $magenta
+      background-color: #FFFFFF
