@@ -5,7 +5,7 @@ import {
   ElementRef,
   HostListener,
   Input,
-  OnInit,
+  OnInit, Renderer2,
   ViewChild
 } from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -33,6 +33,10 @@ export class DatepickerComponent implements OnInit, AfterViewInit {
 
   @Input() firstDayOfWeek = 1;
   @Input() startView: ViewTypes = 'month';
+
+  constructor( private _renderer: Renderer2){
+    console.log(this._renderer);
+  }
 
   $currentView: ViewTypes;
 
@@ -231,7 +235,7 @@ export class DatepickerComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
+    // this._renderer.setProperty(this.input.nativeElement, 'value', 'dd.mm.yyyy')
   }
 
 }
