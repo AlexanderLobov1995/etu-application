@@ -1,7 +1,7 @@
 <div [class.active]="isActive" [formGroup]="datepickerFormGroup" class="datepicker">
     <div #datepickerContainer>
         <input type="text"
-               [appInputTextMask]="{mask: mask}"
+               [appInputTextMask]="{mask: mask, placeholder: 'ddmmyyyy'}"
                (focus)="onInputFocus()"
                (keyup)="onTextChanged()"
                formControlName="input"

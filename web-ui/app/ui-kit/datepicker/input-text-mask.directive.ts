@@ -1,95 +1,104 @@
-import {Directive, ElementRef, forwardRef, Input, OnChanges, OnInit, Renderer2, SimpleChanges} from "@angular/core";
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  Input,
+  Renderer2,
+} from "@angular/core";
 
 @Directive({
   host: {
-    '(input)': '_handleInput($event.target.value)'
+    '(input)': '_handleInput($event.target.value)',
+    '(focus)': 'update()'
   },
-  selector: '[appInputTextMask]',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => InputTextMaskDirective),
-    multi: true
-  }
-  ]
+  selector: '[appInputTextMask]'
 })
-export class InputTextMaskDirective implements  OnInit, OnChanges, ControlValueAccessor{
+export class InputTextMaskDirective implements AfterViewInit {
 
   @Input() appInputTextMask = {
     mask: [],
-    placeholderChar: '_'
+    placeholder: '_'
   };
 
+  previousValue = '';
 
-  constructor( private elementRef: ElementRef, private _renderer: Renderer2){
-    console.log('wwww')
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('2')
-    console.log(changes)
-  }
-
-  onChange = (_: any) => {}
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn
-    console.log(fn)
-    console.log('registerOnChange')
-  }
-
-  registerOnTouched(fn: any): void {
-    console.log(fn)
-    console.log('registerOnTouched')
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    console.log(isDisabled)
-    console.log('setDisabledState');
-  }
-
-  writeValue(obj: any): void {
-    console.log(obj)
-    console.log('writeValue')
-  }
+  constructor(private elementRef: ElementRef, private _renderer: Renderer2) {}
 
   _handleInput(value: string) {
-    // this._renderer.setProperty(this.elementRef.nativeElement, 'disabled', true)
     this.update(value);
-
-    console.log(this.elementRef.nativeElement.selectionEnd)
-    // this.elementRef.nativeElement.selectionEnd = 0;
-    // this.elementRef.nativeElement.value = 'dd.mm.yyyy'
-    // console.log(this._renderer, this.elementRef)
-    // console.log(value);
-    // const  a = value + '.'
-    // this._renderer.setProperty(this.elementRef.nativeElement, 'value', a)
-    // this.onChange(a);
-    // console.log(this.onChange)
-    // console.log('eee')
   }
 
-  convertMaskToPlaceholder(mask = [], placeholderChar = '_', value = ''){
+  convertMaskToPlaceholder(mask = [], placeholderChar = '_', value = '') {
     console.log(value);
     return mask.map((char) => {
-      console.log('char= ', (char instanceof RegExp) ? ( placeholderChar) : char)
-      return (char instanceof RegExp) ? ( placeholderChar) : char
+      return (char instanceof RegExp) ? (placeholderChar) : char
     }).join('')
   }
 
-  update(value: string = ''){
-    const {mask, placeholderChar} = this.appInputTextMask;
-    const placeholder = this.convertMaskToPlaceholder(mask, placeholderChar, value);
+  update(value: string = '') {
+    const {mask = []} = this.appInputTextMask;
+    const maskSize = mask.length;
+    // const valueSize = value.length;
+    if (!value) {
+      const value = mask.map((char, i) => {
+        return (char instanceof RegExp) ? this.getPlaceholderChar(i) : char
+      }).join('');
+      this.previousValue = value;
+      this._renderer.setProperty(this.elementRef.nativeElement, 'value', value)
+      this.elementRef.nativeElement.selectionEnd = 0;
+      return;
+    }
 
-    console.log('placeholder= ', placeholder);
-    this._renderer.setProperty(this.elementRef.nativeElement, 'value', placeholder)
+    if (value.length > this.previousValue.length) {
+      const actualPosition = this.elementRef.nativeElement.selectionEnd - 1;
+      const newPosition = Math.min.apply(null, this.enabledChars
+        .filter((c) => actualPosition <= c));
+      if (mask[newPosition] && value[actualPosition].match(mask[newPosition])) {
+        const newValue = Array.from(this.previousValue);
+        newValue[newPosition] = value[actualPosition];
+        this.previousValue = newValue.join('');
+        this._renderer.setProperty(this.elementRef.nativeElement, 'value', this.previousValue);
+        const posibleCaretPositions = this.enabledChars
+          .filter((c) => (newPosition + 1) <= c);
+        console.log('1_posibleCaretPositions= ', posibleCaretPositions);
+        const caretPos = Math.min.apply(null, posibleCaretPositions.length ? posibleCaretPositions : [maskSize]);
+        this.elementRef.nativeElement.selectionEnd = caretPos;
+      } else {
+        this._renderer.setProperty(this.elementRef.nativeElement, 'value', this.previousValue);
+        this.elementRef.nativeElement.selectionEnd = actualPosition;
+      }
+
+    } else {
+      const newPosition = Math.max.apply(null, this.enabledChars
+        .filter((c) => this.elementRef.nativeElement.selectionEnd >= c));
+      const newValue = Array.from(this.previousValue);
+      newValue[newPosition] = this.getPlaceholderChar(newPosition);
+      console.log('2_pos= ', newPosition);
+      console.log('2_this.enabledChars= ', this.enabledChars);
+      console.log('2_newValue= ', newValue)
+      this.previousValue = newValue.join('');
+      this._renderer.setProperty(this.elementRef.nativeElement, 'value', this.previousValue);
+      this.elementRef.nativeElement.selectionEnd = newPosition;
+    }
 
   }
 
-  ngOnInit(): void {
-    this.update();
-    /*console.log(this.appInputTextMask.mask)
-    this.elementRef.nativeElement.value = 'dd.mm.yyyy'
-    this.elementRef.nativeElement.selectionEnd = 0;*/
+
+  get enabledChars(): number[] {
+    const {mask} = this.appInputTextMask;
+    return mask.map((char, i) => (char instanceof RegExp) ? i : -1)
+      .filter((i) => i >= 0)
+  }
+
+  getPlaceholderChar(position: number) {
+    const {placeholder = '_'} = this.appInputTextMask;
+    const index = this.enabledChars.findIndex((c) => c === position);
+    console.log(index);
+
+    return placeholder[index] || '_';
+  }
+
+  ngAfterViewInit() {
+    // this.update();
   }
 }

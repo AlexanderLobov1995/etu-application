@@ -40,7 +40,7 @@ export class DatepickerComponent implements OnInit, AfterViewInit {
 
   $currentView: ViewTypes;
 
-  mask = [/\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
+  mask = ['(',/\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, ')'];
   defaultHeaderDays = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
   months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
   offsetDay: number;
@@ -188,11 +188,9 @@ export class DatepickerComponent implements OnInit, AfterViewInit {
     this.selectedMonth = this.currentMonth;
     this.selectedYear = this.currentYear;
     this.isActive = false;
-      console.log(day);
   }
 
   selectMonth(month: number){
-    console.log(month)
     this.currentMonth = month;
   }
 
