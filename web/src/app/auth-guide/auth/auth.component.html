@@ -1,0 +1,14 @@
+<div class="auth-content">
+    <div class="tab">
+        <button (mySubmit)="selectedTab=0" [class.active]="selectedTab===0">Войти</button>
+        <button (mySubmit)="selectedTab=1" [class.active]="selectedTab===1">Регистрация</button>
+    </div>
+    <div class="tab-content-container">
+        <div *ngIf="selectedTab === 0" [@toggleAnimation]="true" class="tab-content">
+            <app-login></app-login>
+        </div>
+        <div *ngIf="selectedTab === 1" [@toggleAnimation]="true" class="tab-content">
+            <app-signup></app-signup>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="user-info">
+    <h2 class="name">Имя: {{authState.user.firstname}}</h2>
+    <h2 class="lastName">Фамилия: {{authState.user.lastname}}</h2>
+    <h2 class="role">Роль: {{authState.user.role}}</h2>
+</div>
+<div class="todo-list-container">
+    <div class="todo-list-header">
+        <h1>Список дел</h1>
+    </div>
+    <div class="todo-list">
+        <div class="tab">
+            <button (mySubmit)="selectedTab=0" [class.active]="selectedTab===0">Все задачи</button>
+            <button (mySubmit)="selectedTab=1" [class.active]="selectedTab===1">Выполнено</button>
+        </div>
+        <div class="list">
+            <div *ngFor="let todo of todos" [class.selected] = "todo.checked" [class.completed]="todo.status==='completed'" class="item">
+                <div><input type="checkbox" (change)="todo.checked =!todo.checked"></div>
+                <div class="task-name">{{todo.name}}</div>
+                <div class="status">{{todo.status}}</div>
+                <button *ngIf="authState.accessUpdate" (mySubmit)="updateTodo(todo)"><app-icon ic="edit"></app-icon></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="button-content">
+    <button *ngIf="authState.accessCreate" (mySubmit)="appState.showCreateDialog = true">Создать</button>
+    <button *ngIf="authState.accessDelete" (mySubmit)="deleteTodos()">Удалить</button>
+</div>

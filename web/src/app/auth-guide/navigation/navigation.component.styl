@@ -1,0 +1,28 @@
+@keyframes jump {
+  0%   {transform: translate3d(0,0,0) scale3d(1,1,1);}
+  40%  {transform: translate3d(0,25%,0) scale3d(.7,1.5,1);}
+  100% {transform: translate3d(0, 50%,0) scale3d(1.5,.7,1);}
+}
+
+:host
+  padding 9vh 1vw
+  display flex
+  flex-direction column
+  justify-content space-between
+  button
+    border: none
+    background-color: transparent
+    cursor: pointer
+    transform-origin: 50% 50%;
+    animation: jump .8s linear alternate infinite
+    app-icon
+      width 20px
+      height 20px
+      fill #00bbd2
+  & [disabled]
+    cursor: unset
+    app-icon
+      fill: transparent
+  &:hover
+    app-icon
+      fill #818185

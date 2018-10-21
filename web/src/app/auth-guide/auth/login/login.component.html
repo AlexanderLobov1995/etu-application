@@ -1,0 +1,6 @@
+<form (submit)="login()" [formGroup]="inputFormGroup">
+    <app-input [appFormControl]="inputUsernameFormControl" labelName="логин" placeholder="Введите логин..."></app-input>
+    <app-input [appFormControl]="inputPasswordFormControl" labelName="пароль" placeholder="Введите пароль..." type="password"></app-input>
+    <div *ngIf="errorMessage" [@myAnimation]="true" class="error-message">{{errorMessage}}</div>
+    <app-button [inputFormGroup]="inputFormGroup"  value="Войти" (submit)="login()"></app-button>
+</form>
