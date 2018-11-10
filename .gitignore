@@ -2,7 +2,8 @@
 .idea/
 
 # folder node_moduls
-web-configs/node_modules/
+auth-server/node_modules/
+resource-server/node_modules/
 web-rest/node_modules/
 web/node_modules/
 

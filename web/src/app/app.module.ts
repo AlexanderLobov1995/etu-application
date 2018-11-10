@@ -20,6 +20,7 @@ import {TogoLoggerComponent} from './auth-guide/todo-logger/togo-logger.componen
 import {CreateTodoComponent} from './auth-guide/todo/createTodo/createTodo.component';
 import {UpdateTodoComponent} from './auth-guide/todo/updateTodo/updateTodo.component';
 import {UiKitModule} from './auth-guide/ui-kit/ui-kit.module';
+import {LaboratoryModule} from "./auth-guide/laboratory/laboratory.module";
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {UiKitModule} from './auth-guide/ui-kit/ui-kit.module';
     AuthModule,
     SharedModule,
     UiKitModule,
-    HttpClientModule
+    HttpClientModule,
+    LaboratoryModule
   ],
   providers: [
     NavigationState,

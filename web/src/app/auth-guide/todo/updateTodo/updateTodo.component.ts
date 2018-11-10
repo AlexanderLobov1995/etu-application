@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {AuthGuideState} from '../../auth-guide-state';
 import {Todo} from '../../todo-area/interfaces';
 import {TodoService} from '../../todo-area/todo.service';
+import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-update-todo',
@@ -23,10 +24,12 @@ export class UpdateTodoComponent implements OnInit {
   }
 
   updateTodo() {
-    this.todo.name = this.todoName;
-    this.todo.status = this.status;
-    this.todoService.update(this.todo).then((todos: Todo[]) => {
-      this.appState.fullTodos = todos;
+    const todo = {
+      ...this.todo,
+      name: this.todoName,
+      status: this.status
+    };
+    this.todoService.update(todo).then(()=> {
       this.appState.showUpdateDialog = false;
     });
   }

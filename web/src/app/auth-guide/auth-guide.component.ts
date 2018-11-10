@@ -13,15 +13,9 @@ import {LoggerState} from './todo-logger/logger-state';
 export class AuthGuideComponent {
 
   constructor(public navigationState: NavigationState,
-              authService: AuthService,
               public authState: AuthState,
               public appState: AuthGuideState,
-              public loggerState: LoggerState) {
-    authService.getAuthConfigs().subscribe((res: any) => {
-      authState.roles = res.roles || [];
-      authState.level = res.level;
-    });
-  }
+              public loggerState: LoggerState) {}
 
   onClosePopup() {
     this.appState.hideDialog();

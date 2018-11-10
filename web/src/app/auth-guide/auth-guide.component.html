@@ -104,9 +104,13 @@ HMACSHA256(
     </div>
   </div>
 </div>
-<app-popup (close)="onClosePopup()">
+<app-popup [show]="appState.showPopupDialog" (close)="onClosePopup()">
   <app-auth *ngIf="appState.showAuthDialog"></app-auth>
   <app-create-todo *ngIf="appState.showCreateDialog"></app-create-todo>
   <app-update-todo *ngIf="appState.showUpdateDialog" [todo]="appState.updateTodo"></app-update-todo>
+  <app-laboratory-one *ngIf="appState.showLaboratoryOne"></app-laboratory-one>
+  <app-laboratory-two *ngIf="appState.showLaboratoryTwo"></app-laboratory-two>
+  <app-laboratory-three *ngIf="appState.showLaboratoryThree"></app-laboratory-three>
+  <app-laboratory-four *ngIf="appState.showLaboratoryFour"></app-laboratory-four>
 </app-popup>
 <router-outlet></router-outlet>

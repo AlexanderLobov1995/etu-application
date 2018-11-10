@@ -5,6 +5,7 @@ import {AuthGuideState} from '../../auth-guide-state';
 import {AuthState} from '../auth-state';
 import {AuthService} from '../auth.service';
 import * as jwt from 'jsonwebtoken';
+import {AuthResponse} from "../auth-interfaces";
 
 @Component({
   selector: 'app-login',
@@ -51,25 +52,15 @@ export class LoginComponent implements OnInit {
   login() {
     if (this.inputFormGroup.valid) {
       this.authService.login(this.inputFormGroup.value.username, this.inputFormGroup.value.password)
-        .subscribe((token: string) => this.handleSuccess(token), (error) => this.handleError(error));
+        .subscribe((authResponse: AuthResponse) => this.handleSuccess(authResponse), (error) => this.handleError(error));
     }
   }
 
 
-  handleSuccess(token: string) {
-    jwt.verify(token, 'etu', (error: any, decoded: any) => {
-      if (decoded) {
-        this.authState.token = token;
-        this.authState.role = decoded.aud;
-        this.authState.user = decoded.user;
-        this.appState.showAuthDialog = false;
-      } else {
-        this.inputUsernameFormControl.setErrors({error});
-        this.inputPasswordFormControl.setErrors({error});
-        this.errorMessage = 'Неверный формат токена';
-        this.cd.detectChanges();
-      }
-    });
+  handleSuccess(authResponse: AuthResponse) {
+    this.authState.token = authResponse.token;
+    this.authState.user = authResponse.user;
+    this.appState.showAuthDialog = false;
   }
 
   handleError(error) {

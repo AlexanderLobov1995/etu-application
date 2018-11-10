@@ -1,0 +1,19 @@
+{
+  "name": "web-rest",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "node server --port 8081"
+  },
+  "private": true,
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "http-proxy": "^1.17.0",
+    "http-proxy-response-rewrite": "0.0.1",
+    "jsonwebtoken": "^8.2.1",
+    "parse-formdata": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^7.2.6"
+  }
+}

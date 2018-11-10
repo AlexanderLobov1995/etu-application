@@ -1,4 +1,9 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef, HostListener,
+  ViewChild
+} from '@angular/core';
 import {AuthGuideState} from '../auth-guide-state';
 import {AuthState} from '../auth/auth-state';
 
@@ -12,14 +17,10 @@ export class HeaderComponent {
   @ViewChild('menu') menu: ElementRef;
   menuActive = false;
 
-  constructor(public authState: AuthState,
-              public appState: AuthGuideState,
-              public changeDetector: ChangeDetectorRef) {
-    window.addEventListener('click', this.closeMenu);
+  constructor(public authState: AuthState, public appState: AuthGuideState) {
   }
 
   toggleMenu() {
-    console.log('toggle');
     this.menuActive = !this.menuActive;
   }
 
@@ -31,10 +32,10 @@ export class HeaderComponent {
     this.authState.token = '';
   }
 
-  closeMenu = (event: any) => {
+  @HostListener('window:click', ['$event'])
+  closeMenu(event: any) {
     if (!this.menu.nativeElement.contains(event.target) && this.menuActive) {
       this.menuActive = false;
-      this.changeDetector.markForCheck();
     }
   }
 }

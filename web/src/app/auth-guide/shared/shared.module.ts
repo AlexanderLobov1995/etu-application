@@ -4,11 +4,12 @@ import {FormsModule} from '@angular/forms';
 import {EventDirective} from '../event.directive';
 import {OutsideDirective} from '../outside.directive';
 import {SvgIconComponent} from './svg-icon/svg-icon.component';
+import {MatProgressSpinnerModule} from "@angular/material";
 
 @NgModule({
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatProgressSpinnerModule],
   declarations: [SvgIconComponent, EventDirective, OutsideDirective],
-  exports: [SvgIconComponent, CommonModule, EventDirective, FormsModule, OutsideDirective]
+  exports: [SvgIconComponent, CommonModule, EventDirective, FormsModule, OutsideDirective, MatProgressSpinnerModule]
 })
 export class SharedModule {
 }

@@ -14,10 +14,10 @@ export class AuthService {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('password', password);
-    return this.httpClient.post('http://localhost:8081/auth', formData, {responseType: 'text'});
+    return this.httpClient.post('https://localhost:8081/auth', formData);
   }
 
   getAuthConfigs() {
-    return this.httpClient.get('http://localhost:3000/configs');
+    return this.httpClient.get('https://localhost:3000/configs');
   }
 }

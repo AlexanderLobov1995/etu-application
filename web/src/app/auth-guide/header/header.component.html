@@ -1,11 +1,15 @@
 <span class="name">Authorization Guide</span>
 <div [class.menu-active]="menuActive" class="menu-container">
-    <button (mySubmit)="toggleMenu()" class="menu-button" #menu><app-icon ic="menu"></app-icon></button>
+    <button (click)="toggleMenu()" class="menu-button" #menu><app-icon ic="menu"></app-icon></button>
     <div class="menu">
-        <button *ngIf="!authState.token" (mySubmit)="submit()">Войти</button>
-        <button *ngIf="authState.token" (mySubmit)="logout()">Выйти</button>
-        <button *ngIf="!appState.showLogger" (mySubmit)="appState.showLogger = true">Показать логи</button>
-        <button *ngIf="appState.showLogger" (mySubmit)="appState.showLogger = false">Убрать логи</button>
+        <button *ngIf="!authState.token" (click)="submit()">Войти</button>
+        <button *ngIf="authState.token" (click)="logout()">Выйти</button>
+        <button *ngIf="!appState.showLogger" (click)="appState.showLogger = true">Показать логи</button>
+        <button *ngIf="appState.showLogger" (click)="appState.showLogger = false">Убрать логи</button>
+        <button (click)="appState.showLaboratoryOne = true">Лабораторная работа № 1</button>
+        <button (click)="appState.showLaboratoryTwo = true">Лабораторная работа № 2</button>
+        <button (click)="appState.showLaboratoryThree = true">Лабораторная работа № 3</button>
+        <button (click)="appState.showLaboratoryFour = true">Лабораторная работа № 4</button>
         <button>Инфо</button>
     </div>
 </div>

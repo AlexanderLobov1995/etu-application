@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
+  EventEmitter, Input,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -17,22 +17,18 @@ import {
 })
 export class PopupComponent implements AfterViewChecked {
   @ViewChild('menu') menu: ElementRef;
+  @Input() show = false;
   @Output() close = new EventEmitter();
-
-  show = false;
 
   constructor(private changeDetector: ChangeDetectorRef) {
   }
 
   ngAfterViewChecked() {
-    this.show = !!this.menu.nativeElement.childElementCount;
-    this.changeDetector.detectChanges();
+    console.log(this.changeDetector);
   }
 
   closeMenu(event: any) {
-    console.log('popup');
     if (!this.menu.nativeElement.contains(event.target) && this.show) {
-      console.log('here');
       this.close.emit();
     }
   }

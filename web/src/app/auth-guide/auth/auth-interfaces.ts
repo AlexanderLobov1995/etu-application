@@ -14,4 +14,10 @@ export interface User {
   firstname: string;
   lastname: string;
   role: string;
+  rights: string[];
+}
+
+export interface AuthResponse {
+  user: User;
+  token: string;
 }

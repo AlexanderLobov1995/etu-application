@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {AuthGuideState} from '../../auth-guide-state';
 import {Todo} from '../../todo-area/interfaces';
 import {TodoService} from '../../todo-area/todo.service';
+import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-create-todo',
@@ -15,8 +16,7 @@ export class CreateTodoComponent {
   }
 
   createTodo() {
-    this.todoService.createTodo(this.todoName).then((todos: Todo[]) => {
-      this.appState.fullTodos = todos;
+    this.todoService.createTodo(this.todoName).then(()=> {
       this.appState.showCreateDialog = false;
     });
   }

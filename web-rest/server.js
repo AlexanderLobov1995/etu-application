@@ -1,117 +1,64 @@
-const jwt = require('jsonwebtoken');
-const http = require('http');
-const service = require('./service');
-const url = require('url');
-const parseFormdata = require('parse-formdata');
+const https = require('https');
+const fs = require('fs');
+const httpProxy = require('http-proxy');
+const modifyResponse = require('http-proxy-response-rewrite');
 
-http.createServer((req, res) => {
-  if (req.url.startsWith('/auth')) {
-    const headers = {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Methods': 'POST',
-      'Access-Control-Allow-Origin': 'http://localhost:8080'
-    };
-    parseFormdata(req, (err, data) => {
-      const user = service.login(data.fields.username, data.fields.password);
-      if (user) {
-        const token = jwt.sign({id: user.id, user: {
-              firstname: user.firstName,
-              lastname: user.lastName,
-              role: user.audience || 'guest'
-            }
-          }, 'etu', {
-          audience: user.audience || 'guest',
-          header: {typ: 'JWT'},
-          expiresIn: 3600
-        });
-        res.writeHead(200, headers);
-        res.end(token);
-      } else {
-        res.writeHead(404, headers);
-        res.end('Credentials is invalid');
-      }
+const options = {
+    key: fs.readFileSync('../ssl/server.key', 'utf-8'),
+    cert: fs.readFileSync('../ssl/server.crt', 'utf-8'),
+};
+
+const headers = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Headers': 'Content-Type, Origin, X-Requested-With, Content-Type, Accept, Authorization',
+    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    'Access-Control-Allow-Origin': 'https://localhost'
+};
+
+let cacheToken = new Map();
+
+const proxy = new httpProxy.createProxyServer();
+proxy.on('proxyRes', function (proxyRes, req, res) {
+    modifyResponse(res, proxyRes.headers['content-encoding'], function (body) {
+        const resBody = body && JSON.parse(body) || {error: 'something wrong'};
+        res.writeHead(res.statusCode, headers);
+        if (req.url.startsWith('/auth') && !resBody.error ) {
+            cacheToken.set(resBody.sessionToken, resBody.jwtToken);
+            return JSON.stringify({
+                user: resBody.user,
+                token: resBody.sessionToken
+            });
+        }
+        return body;
     });
-  }else if (req.url.startsWith('/todos')){
-    handleTodo(req, res);
-  }else{
+});
+
+
+https.createServer(options, (req, res) => {
+    if(req.url.startsWith('/auth') || req.url.startsWith('/todos')){
+        const reqToken = (req.headers.authorization || '').replace('Bearer ', '');
+        const jwtToken = cacheToken.get(reqToken);
+        if(jwtToken){
+            req.headers.authorization = `Bearer ${jwtToken}`
+        }
+        proxy.web(req, res, {
+            target: getTarget(req.url),
+            changeOrigin: true,
+            secure: false
+        });
+        return;
+    }
     res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end('Server is worked')
-  }
+    res.end('Server is worked');
+
 }).listen(8081, () => console.log('Сервер работает!'));
 
-const handleTodo = (req, res) => {
-  const headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-    'Access-Control-Allow-Origin': 'http://localhost:8080'
-  };
-  const token = (req.headers.authorization || '').replace('Bearer ', '');
-  switch (req.method) {
-    case 'OPTIONS': {
-      res.writeHead(200, headers);
-      res.end('');
-      break;
+function getTarget(url) {
+    if(url.startsWith('/auth')){
+        return 'https://localhost:8082/auth'
     }
-    case 'GET': {
-      jwt.verify(token, 'etu', (err, decoded) => {
-        if (decoded) {
-          const todos = service.getTodos(decoded.id);
-          res.writeHead(200, headers);
-          res.end(JSON.stringify(todos));
-        }else{
-          res.writeHead(401, headers);
-          res.end(JSON.stringify('Unauthorized'));
-        }
-      });
-      break;
+    if(url.startsWith('/todos')){
+        return 'https://localhost:8083/todos'
     }
-    case 'POST': {
-      jwt.verify(token, 'etu', (err, decoded) => {
-        if (decoded) {
-          parseFormdata(req, (err, data) => {
-            const todos = service.createTodo(decoded.id, data.fields.todoName);
-            res.writeHead(200, headers);
-            res.end(JSON.stringify(todos));
-          });
-        }else{
-          res.writeHead(401, headers);
-          res.end(JSON.stringify('Unauthorized'));
-        }
-      });
-      break;
-    }
-    case 'PUT': {
-      jwt.verify(token, 'etu', (err, decoded) => {
-        if (decoded) {
-          parseFormdata(req, (err, data) => {
-            const todos = service.updateTodo(decoded.id, data.fields);
-            res.writeHead(200, headers);
-            res.end(JSON.stringify(todos));
-          });
-        }else{
-          res.writeHead(401, headers);
-          res.end(JSON.stringify('Unauthorized'));
-        }
-      });
-      break;
-    }
-    case 'DELETE': {
-      jwt.verify(token, 'etu', (err, decoded) => {
-        if (decoded) {
-          parseFormdata(req, (err, data) => {
-            const ids = (url.parse(req.url, true)).query.ids.split(',').map((id)=> +id);
-            const todos = service.deleteTodo(ids);
-            res.writeHead(200, headers);
-            res.end(JSON.stringify(todos));
-          });
-        }else{
-          res.writeHead(401, headers);
-          res.end(JSON.stringify('Unauthorized'));
-        }
-      });
-      break;
-    }
-  }
-};
+    return '';
+}
