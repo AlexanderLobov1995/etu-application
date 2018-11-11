@@ -4,8 +4,7 @@
     <div class="menu">
         <button *ngIf="!authState.token" (click)="submit()">Войти</button>
         <button *ngIf="authState.token" (click)="logout()">Выйти</button>
-        <button *ngIf="!appState.showLogger" (click)="appState.showLogger = true">Показать логи</button>
-        <button *ngIf="appState.showLogger" (click)="appState.showLogger = false">Убрать логи</button>
+        <button (click)="appState.showLogger = true">Логирование</button>
         <button (click)="appState.showLaboratoryOne = true">Лабораторная работа № 1</button>
         <button (click)="appState.showLaboratoryTwo = true">Лабораторная работа № 2</button>
         <button (click)="appState.showLaboratoryThree = true">Лабораторная работа № 3</button>

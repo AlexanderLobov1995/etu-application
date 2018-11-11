@@ -13,7 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (req.headers.has('authorization') || req.url.endsWith('/configs') || req.url.endsWith('/auth') || req.method === 'OPTIONS') {
+    if (req.headers.has('authorization') || req.url.endsWith('/auth/login') || req.url.endsWith('/auth/signup') || req.method === 'OPTIONS') {
       return next.handle(req)
         .pipe(
           tap((res: HttpResponse<any>) => this.setLog(req, res))

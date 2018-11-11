@@ -1,0 +1,6 @@
+<form (submit)="answer()" [formGroup]="inputFormGroup">
+  <app-input [appFormControl]="inputAnswerFormControl" labelName="логин" placeholder="Ответ на вопрос..."></app-input>
+  <app-input [appFormControl]="inputConfirmAnswerFormControl" labelName="пароль" placeholder="Подтвердите ответ..." type="password"></app-input>
+  <div *ngIf="errorMessage" [@myAnimation]="true" class="error-message">{{errorMessage}}</div>
+  <app-button [inputFormGroup]="inputFormGroup"  value="Подтвердить" (submit)="answer()"></app-button>
+</form>

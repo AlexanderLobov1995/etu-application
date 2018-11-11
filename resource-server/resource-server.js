@@ -24,7 +24,7 @@ https.createServer(options, (req, res) => {
             case 'GET': {
                 jwt.verify(token, 'etu', (err, decoded) => {
                     if (decoded) {
-                        service.getTodos(decoded.id)
+                        service.getTodos(decoded._id)
                             .then((todos)=> {
                                 res.writeHead(200);
                                 res.end(JSON.stringify(todos));
@@ -44,10 +44,10 @@ https.createServer(options, (req, res) => {
                 jwt.verify(token, 'etu', (err, decoded) => {
                     if (decoded) {
                         parseFormdata(req, (err, data) => {
-                            service.createTodo(decoded.id, data.fields.todoName)
-                                .then((mongoTodos)=> {
+                            service.createTodo(decoded._id, data.fields.todoName)
+                                .then((todos)=> {
                                     res.writeHead(200);
-                                    res.end(JSON.stringify(mongoTodos));
+                                    res.end(JSON.stringify(todos));
                                 })
                                 .catch(()=> {
                                     res.writeHead(500);
@@ -65,7 +65,7 @@ https.createServer(options, (req, res) => {
                 jwt.verify(token, 'etu', (err, decoded) => {
                     if (decoded) {
                         parseFormdata(req, (err, data) => {
-                            service.updateTodo(decoded.id, data.fields)
+                            service.updateTodo(decoded._id, data.fields)
                                 .then((todos)=> {
                                     res.writeHead(200);
                                     res.end(JSON.stringify(todos));
@@ -87,9 +87,8 @@ https.createServer(options, (req, res) => {
                     if (decoded) {
                         parseFormdata(req, (err, data) => {
                             const ids = url.parse(req.url, true).query.ids.split(',');
-                            service.deleteTodo(decoded.id, ids)
+                            service.deleteTodo(decoded._id, ids)
                                 .then((todos)=>{
-                                    console.log(todos)
                                     res.writeHead(200);
                                     res.end(JSON.stringify(todos));
                                 }).catch(()=>{

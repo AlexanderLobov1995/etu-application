@@ -8,39 +8,89 @@ const service = require('./auth-service');
 
 const options = {
     key: fs.readFileSync('../ssl/server.key', 'utf-8'),
-    cert: fs.readFileSync('../ssl/server.crt', 'utf-8')
+    cert: fs.readFileSync('../ssl/server.crt', 'utf-8'),
 };
 
 https.createServer(options, (req, res) => {
-    if(req.url.startsWith('/auth')) {
+    if(req.url.startsWith('/auth/login')) {
         parseFormdata(req, (err, data) => {
             const {fields} = data || {};
             const username = fields && fields.username || '';
             const password = fields && fields.password || '';
-            const userResponse = service.login(username, password);
-            if (userResponse) {
-                const firstname = userResponse.firstName || '';
-                const lastname = userResponse.lastName || '';
-                const role = userResponse.audience || 'guest';
-                const id = userResponse.id;
-                const audience = userResponse.audience || 'guest';
-                const user = {firstname, lastname, role, rights: ['get', 'create', 'delete', 'update']};
-                const jwtToken = jwt.sign({id, user}, 'etu', {
-                    audience,
-                    header: {typ: 'JWT'},
-                    expiresIn: 3600
+            service.login(username, password)
+                .then((userResponse)=> {
+                    if (userResponse) {
+                        const firstname = userResponse.firstName || '';
+                        const lastname = userResponse.lastName || '';
+                        const role = userResponse.audience || 'user';
+                        const _id = userResponse._id;
+                        const audience = userResponse.audience || 'user';
+                        const user = {firstname, lastname, role, rights: ['get', 'create', 'delete', 'update']};
+                        const jwtToken = jwt.sign({_id, user}, 'etu', {
+                            audience,
+                            header: {typ: 'JWT'},
+                            expiresIn: 3600
+                        });
+                        const authResponse = {
+                            user,
+                            jwtToken,
+                            sessionToken: (new Date().getTime()).toString()
+                        };
+                        res.writeHead(200);
+                        res.end(JSON.stringify(authResponse));
+                    } else {
+                        res.writeHead(401);
+                        res.end(JSON.stringify({"error":"Credentials are invalid"}));
+                    }
+                })
+                .catch(()=> {
+                    res.writeHead(500);
+                    res.end(JSON.stringify({error: 'data center is broken'}));
                 });
-                res.writeHead(200);
-                const authResponse = {
-                    user,
-                    jwtToken,
-                    sessionToken: (new Date().getTime()).toString()
-                };
-                res.end(JSON.stringify(authResponse));
-            } else {
-                res.writeHead(404);
-                res.end(JSON.stringify({"error":"Credentials are invalid"}));
-            }
+        });
+        return;
+    }
+    if(req.url.startsWith('/auth/signup')) {
+        parseFormdata(req, (err, data) => {
+            const {fields} = data || {};
+            const firstName = fields && fields.firstName || '';
+            const lastName = fields && fields.lastName || '';
+            const phoneNumber = fields && fields.phoneNumber || '';
+            const email = fields && fields.email || '';
+            const username = fields && fields.username || '';
+            const password = fields && fields.password || '';
+            const secretQuestion = fields && fields.secretQuestion || '';
+            const secretAnswer = fields && fields.secretAnswer || '';
+            service.signUp(firstName, lastName, phoneNumber, email, username, password, secretQuestion, secretAnswer)
+                .then((userResponse)=> {
+                    if (userResponse) {
+                        const firstname = userResponse.firstName || '';
+                        const lastname = userResponse.lastName || '';
+                        const role = userResponse.audience || 'guest';
+                        const _id = userResponse._id;
+                        const audience = userResponse.audience || 'guest';
+                        const user = {firstname, lastname, role, rights: ['get', 'create', 'delete', 'update']};
+                        const jwtToken = jwt.sign({_id, user}, 'etu', {
+                            audience,
+                            header: {typ: 'JWT'},
+                            expiresIn: 3600
+                        });
+                        const authResponse = {
+                            user,
+                            jwtToken,
+                            sessionToken: (new Date().getTime()).toString()
+                        };
+                        res.writeHead(200);
+                        res.end(JSON.stringify(authResponse));
+                    } else {
+                        res.writeHead(500);
+                        res.end(JSON.stringify({error:"data center incorrect works"}));
+                    }
+                })
+                .catch(()=> {
+                    res.writeHead(500);
+                    res.end(JSON.stringify({error: 'data center is broken'}));
+                });
         });
         return;
     }

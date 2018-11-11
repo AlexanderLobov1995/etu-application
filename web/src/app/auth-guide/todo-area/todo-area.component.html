@@ -1,7 +1,7 @@
 <div class="user-info">
     <h2 class="name">Имя: {{authState.user.firstname}}</h2>
     <h2 class="lastName">Фамилия: {{authState.user.lastname}}</h2>
-    <h2 class="role">Роль: User</h2>
+    <h2 class="role">Роль: {{authState.user.role}}</h2>
 </div>
 <div class="todo-list-container">
     <div class="todo-list-header">
@@ -17,9 +17,9 @@
             <button (mySubmit)="setTab(0)" [class.active]="tab===0">Все задачи</button>
             <button (mySubmit)="setTab(1)" [class.active]="tab===1">Выполнено</button>
         </div>
-        <div class="list">
+        <div [formGroup]="formGroup" class="list">
             <div *ngFor="let todo of todos | async" [class.selected] = "isChecked(todo._id)" [class.completed]="todo.status==='completed'" class="item">
-                <div><input type="checkbox" (change)="checkTodo(todo._id)"></div>
+                <div><input [formControlName]="todo._id" type="checkbox"></div>
                 <div class="task-name">{{todo.name}}</div>
                 <div class="status">{{todo.status}}</div>
                 <button *ngIf="authState.accessUpdate" (mySubmit)="updateTodo(todo)"><app-icon ic="edit"></app-icon></button>

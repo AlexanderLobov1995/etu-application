@@ -8,6 +8,7 @@ import {AuthComponent} from './auth.component';
 import {AuthService} from './auth.service';
 import {LoginComponent} from './login/login.component';
 import {SignUpComponent} from './signup/signup.component';
+import { AnswerComponent } from './answer/answer.component';
 
 @NgModule({
   imports: [
@@ -15,8 +16,8 @@ import {SignUpComponent} from './signup/signup.component';
     SharedModule,
     UiKitModule
   ],
-  declarations: [LoginComponent, SignUpComponent, AuthComponent],
-  exports: [LoginComponent, SignUpComponent, AuthComponent, HttpClientModule],
+  declarations: [LoginComponent, SignUpComponent, AuthComponent, AnswerComponent],
+  exports: [LoginComponent, SignUpComponent, AnswerComponent, AuthComponent, HttpClientModule],
   providers: [
     AuthService,
     AuthState,

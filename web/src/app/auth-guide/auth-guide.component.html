@@ -26,7 +26,6 @@
           <app-signup></app-signup>
         </div>
         <app-todo-area *ngIf="authState.token"></app-todo-area>
-        <app-todo-logger *ngIf="appState.showLogger" [loggs]="loggerState.loggs"></app-todo-logger>
       </div>
       <div class="page">
         <h1>Что такое JSON Web Token?</h1>
@@ -105,7 +104,9 @@ HMACSHA256(
   </div>
 </div>
 <app-popup [show]="appState.showPopupDialog" (close)="onClosePopup()">
+  <app-todo-logger *ngIf="appState.showLogger" [loggs]="loggerState.loggs"></app-todo-logger>
   <app-auth *ngIf="appState.showAuthDialog"></app-auth>
+  <app-answer *ngIf="appState.showAnswerDialog"></app-answer>
   <app-create-todo *ngIf="appState.showCreateDialog"></app-create-todo>
   <app-update-todo *ngIf="appState.showUpdateDialog" [todo]="appState.updateTodo"></app-update-todo>
   <app-laboratory-one *ngIf="appState.showLaboratoryOne"></app-laboratory-one>

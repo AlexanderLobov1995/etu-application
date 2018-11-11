@@ -1,21 +1,21 @@
 <div class="logger-container">
-    <div *ngFor="let log of filteredLoggs" class="req-res">
-        <div class="req">
-            <span class="short"><b><app-icon ic="left-arrow"></app-icon> Request URL:</b> {{log.request.url}}</span>
-            <span class="short"><b>Request Method:</b> {{log.request.method}}</span>
-            <span class="short"><b>Status Code:</b> {{log.response.statusCode}} {{log.response.statusText}}</span>
-            <span *ngIf="log.request.headers.length" class="short"><b>Request Headers:</b></span>
-            <ng-container *ngFor="let header of log.request.headers">
-                <span *ngIf="header.value" class="header long">
-                    <b>{{header.name}}:</b> {{header.value}}
-                </span>
-            </ng-container>
-        </div>
-        <div class="res">
-            <span><b><app-icon ic="right-arrow"></app-icon>Response:</b></span>
-            <pre class="body long">
-                {{log.response.body | json}}
-            </pre>
-        </div>
+  <div *ngFor="let log of loggs" class="req-res">
+    <div class="req">
+      <span class="short"><b><app-icon ic="left-arrow"></app-icon> Request URL:</b> {{log.request.url}}</span>
+      <span class="short"><b>Request Method:</b> {{log.request.method}}</span>
+      <span class="short"><b>Status Code:</b> {{log.response.statusCode}} {{log.response.statusText}}</span>
+      <span *ngIf="log.request.headers.length" class="short"><b>Request Headers:</b></span>
+      <ng-container *ngFor="let header of log.request.headers">
+              <span *ngIf="header.value" class="header long">
+                  <b>{{header.name}}:</b> {{header.value}}
+              </span>
+      </ng-container>
     </div>
+    <div class="res">
+      <span><b><app-icon ic="right-arrow"></app-icon>Response:</b></span>
+      <pre class="body long">
+              {{log.response.body | json}}
+          </pre>
+    </div>
+  </div>
 </div>

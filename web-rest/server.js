@@ -1,6 +1,7 @@
 const https = require('https');
 const fs = require('fs');
 const httpProxy = require('http-proxy');
+const urlObj = require('url');
 const modifyResponse = require('http-proxy-response-rewrite');
 
 const options = {
@@ -41,24 +42,25 @@ https.createServer(options, (req, res) => {
         if(jwtToken){
             req.headers.authorization = `Bearer ${jwtToken}`
         }
+        const urlPathName = urlObj.parse(req.url, true).pathname;
         proxy.web(req, res, {
-            target: getTarget(req.url),
+            target: getTarget(urlPathName),
             changeOrigin: true,
             secure: false
         });
         return;
     }
-    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.writeHead(200, headers);
     res.end('Server is worked');
 
 }).listen(8081, () => console.log('Сервер работает!'));
 
 function getTarget(url) {
-    if(url.startsWith('/auth')){
-        return 'https://localhost:8082/auth'
+    if(url.startsWith('/auth')) {
+        return `https://localhost:8082${url}`;
     }
-    if(url.startsWith('/todos')){
-        return 'https://localhost:8083/todos'
+    if(url.startsWith('/todos')) {
+        return `https://localhost:8083${url}`;
     }
     return '';
 }

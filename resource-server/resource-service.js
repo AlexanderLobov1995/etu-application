@@ -24,7 +24,7 @@ function createTodo(userId, todoName) {
         name: todoName,
         status: "in progress",
         userId
-    }).then(()=> collection.find().toArray());
+    }).then(()=> collection.find({userId}).toArray());
 }
 
 function updateTodo(userId, updateTodo) {
@@ -38,7 +38,13 @@ function updateTodo(userId, updateTodo) {
 }
 
 function deleteTodo(userId, todoIds) {
-    const ids = todoIds.map((id)=> ObjectId(id));
+    const ids = todoIds.map((id)=> {
+        try {
+          return  ObjectId(id)
+        }catch (e) {
+          return id;
+        }
+    });
     const dbName = 'todos';
     const db = clientDB.db(dbName);
     const collection = db.collection('todos');

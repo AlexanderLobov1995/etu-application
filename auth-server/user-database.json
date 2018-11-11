@@ -3,14 +3,18 @@
     "id": 1,
     "firstName": "Alexander",
     "lastName": "Lobov",
+    "phoneNumber": "+79818908111",
+    "email": "alex1995nazarovo@gmail.com",
     "username": "1",
     "password": "1",
-    "audience": "user"
+    "audience": "admin"
   },
   {
     "id": 2,
     "firstName": "Nikita",
     "lastName": "Mamaev",
+    "phoneNumber": "+79818908112",
+    "email": "nikitamamaev@gmail.com",
     "username": "nikita",
     "password": "mamaev",
     "audience": "user"
@@ -19,7 +23,10 @@
     "id": 3,
     "firstName": "Denis",
     "lastName": "Lobov",
+    "phoneNumber": "+79818908113",
+    "email": "denislobov@gmail.com",
     "username": "denis",
-    "password": "lobov"
+    "password": "lobov",
+    "audience": "user"
   }
 ]

@@ -1,8 +1,7 @@
 import {HttpClient, HttpParams,} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Todo} from './interfaces';
-import {catchError, switchMap, tap} from "rxjs/operators";
-import {BehaviorSubject, combineLatest, Observable, of, pipe, Subject} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable()
 export class TodoService {
@@ -35,9 +34,9 @@ export class TodoService {
       .catch(()=> []);
   }
 
-  deleteTodo(ids: number[]) {
+  deleteTodo(ids) {
     let params = new HttpParams();
-    params = params.append('ids', ids.toString());
+    params = params.append('ids', ids.join(','));
     return this.httpClient.delete('https://localhost:8081/todos', {params: params})
       .toPromise()
       .then((todos: Todo[]) => {
