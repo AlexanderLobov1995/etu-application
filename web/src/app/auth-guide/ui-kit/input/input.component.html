@@ -2,9 +2,11 @@
     <label [for]="labelName" [id]="labelId">{{labelName}}</label>
     <input [formControl] = "appFormControl"
            [placeholder]="placeholder"
+           [value]="appFormControl.value"
            [type]="type"
            (focus)="onFocus()"
            (blur)="onBlur()"
            autocomplete="off"
            [id]="labelName"/>
 </div>
+<div *ngIf="errorMessage" [@myAnimation]="true" class="error-message">{{errorMessage.value}}</div>

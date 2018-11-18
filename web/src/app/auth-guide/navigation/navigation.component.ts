@@ -12,16 +12,16 @@ export class NavigationComponent {
   }
 
   goUp() {
-    if (this.navigationState.pageOffset < 0) {
-      this.navigationState.pageOffset += 100;
-      this.changeDetector.markForCheck();
+    if (this.navigationState.page > 0) {
+      this.navigationState.page --;
+      this.navigationState.status.next('up');
     }
   }
 
   goDown() {
-    if (this.navigationState.pageOffset > -200) {
-      this.navigationState.pageOffset -= 100;
-      this.changeDetector.markForCheck();
+    if (this.navigationState.page < 2) {
+      this.navigationState.page ++;
+      this.navigationState.status.next('down');
     }
   }
 

@@ -12,8 +12,7 @@ import {
 @Component({
   selector: 'app-popup',
   templateUrl: './popup.component.html',
-  styleUrls: ['./popup.component.styl'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./popup.component.styl']
 })
 export class PopupComponent implements AfterViewChecked {
   @ViewChild('menu') menu: ElementRef;

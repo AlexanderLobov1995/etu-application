@@ -48,7 +48,7 @@ export class TodoAreaComponent implements OnInit{
 
   updateTodo(todo: Todo) {
     this.appState.updateTodo = todo;
-    this.appState.showUpdateDialog = true;
+    this.appState.showPopupState.next('showUpdateDialog');
   }
 
   formControl(controlName) {

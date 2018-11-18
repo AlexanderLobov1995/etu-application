@@ -1,13 +1,15 @@
 <form (submit)="signUp()" [formGroup]="inputFormGroup">
   <app-input [appFormControl]="inputFirstNameFormControl" labelName="*имя" placeholder="Введите имя..."></app-input>
   <app-input [appFormControl]="inputLastNameFormControl" labelName="*фамилия" placeholder="Введите фамилию..."></app-input>
-  <app-input [appFormControl]="inputPhoneNumberFormControl" labelName="*телефон" placeholder="Введите номер..."></app-input>
+  <app-input [appFormControl]="inputPhoneNumberFormControl" [textMask]="{mask: mask}" labelName="*телефон" placeholder="Введите номер..."></app-input>
   <app-input [appFormControl]="inputEmailFormControl" labelName="*эл. адрес" placeholder="Введите эл. адрес..."></app-input>
   <app-input [appFormControl]="inputUsernameFormControl" labelName="*логин" placeholder="Введите логин..."></app-input>
   <app-input [appFormControl]="inputPasswordFormControl" labelName="*пароль" placeholder="Введите пароль..." type="password"></app-input>
-  <app-input [appFormControl]="inputConfirmPasswordFormControl" labelName="*пароль" placeholder="Подтвердите пароль..." type="password"></app-input>
-  <app-input [appFormControl]="inputSecretQuestionFormControl" labelName="*вопрос" placeholder="Выберете вопрос..."></app-input>
-  <app-input [appFormControl]="inputSecretAnswerFormControl" labelName="*ответ" placeholder="Введите ответ..."></app-input>
-  <div *ngIf="errorMessage" [@myAnimation]="true" class="error-message">{{errorMessage}}</div>
+  <app-input *ngIf="isShowConfirmPassword" @myAnimation
+             [appFormControl]="inputConfirmPasswordFormControl" labelName="*пароль" placeholder="Подтвердите пароль..." type="password"></app-input>
+  <ng-container *ngIf="isShowAdditions">
+    <app-input @myAnimation [appFormControl]="inputSecretQuestionFormControl" labelName="*вопрос" placeholder="Выберете вопрос..."></app-input>
+    <app-input @myAnimation [appFormControl]="inputSecretAnswerFormControl" labelName="*ответ" placeholder="Введите ответ..."></app-input>
+  </ng-container>
   <app-button [inputFormGroup]="inputFormGroup"  value="Зарегистрироваться" (submit)="signUp()"></app-button>
 </form>

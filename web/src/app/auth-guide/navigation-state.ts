@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
+import {BehaviorSubject} from "rxjs";
 
 @Injectable()
 export class NavigationState {
-  pageOffset = 0;
+  page = 0;
+  status = new BehaviorSubject('init');
 }

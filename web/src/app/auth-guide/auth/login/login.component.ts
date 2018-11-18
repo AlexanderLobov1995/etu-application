@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
   handleSuccess(authResponse: AuthResponse) {
     this.authState.token = authResponse.token;
     this.authState.user = authResponse.user;
-    this.appState.showAuthDialog = false;
+    this.appState.showPopupState.next('');
   }
 
   handleError(error) {

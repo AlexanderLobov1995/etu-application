@@ -35,7 +35,7 @@ export class AnswerComponent implements OnInit {
   handleSuccess(authResponse: AuthResponse) {
     this.authState.token = authResponse.token;
     this.authState.user = authResponse.user;
-    this.appState.showAnswerDialog = false;
+    this.appState.showPopupState.next('');
   }
 
   handleError(error) {

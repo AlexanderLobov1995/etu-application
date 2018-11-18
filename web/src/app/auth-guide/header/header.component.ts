@@ -24,12 +24,13 @@ export class HeaderComponent {
     this.menuActive = !this.menuActive;
   }
 
-  submit() {
-    this.appState.showAuthDialog = true;
-  }
-
   logout() {
     this.authState.token = '';
+  }
+
+  open(value) {
+    console.log(value);
+    this.appState.showPopupState.next(value);
   }
 
   @HostListener('window:click', ['$event'])

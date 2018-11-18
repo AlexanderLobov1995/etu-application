@@ -2,13 +2,13 @@
 <div [class.menu-active]="menuActive" class="menu-container">
     <button (click)="toggleMenu()" class="menu-button" #menu><app-icon ic="menu"></app-icon></button>
     <div class="menu">
-        <button *ngIf="!authState.token" (click)="submit()">Войти</button>
+        <button *ngIf="!authState.token" (click)="open('showAuthDialog')">Войти</button>
         <button *ngIf="authState.token" (click)="logout()">Выйти</button>
-        <button (click)="appState.showLogger = true">Логирование</button>
-        <button (click)="appState.showLaboratoryOne = true">Лабораторная работа № 1</button>
-        <button (click)="appState.showLaboratoryTwo = true">Лабораторная работа № 2</button>
-        <button (click)="appState.showLaboratoryThree = true">Лабораторная работа № 3</button>
-        <button (click)="appState.showLaboratoryFour = true">Лабораторная работа № 4</button>
+        <button (click)="open('showLogger')">Логирование</button>
+        <button (click)="open('showLaboratoryOne')">Лабораторная работа № 1</button>
+        <button (click)="open('showLaboratoryTwo')">Лабораторная работа № 2</button>
+        <button (click)="open('showLaboratoryThree')">Лабораторная работа № 3</button>
+        <button (click)="open('showLaboratoryFour')">Лабораторная работа № 4</button>
         <button>Инфо</button>
     </div>
 </div>

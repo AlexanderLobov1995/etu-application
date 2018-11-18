@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {AuthState} from '../auth-state';
 import {AuthService} from '../auth.service';
 import {animate, style, transition, trigger} from "@angular/animations";
@@ -45,6 +45,8 @@ export class SignUpComponent {
 
   errorMessage = '';
 
+  mask = ['+','7', '(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+
   constructor(public authService: AuthService,
               private authState: AuthState,
               private appState: AuthGuideState,
@@ -58,7 +60,7 @@ export class SignUpComponent {
       Validators.required
     ]);
     this.inputPhoneNumberFormControl = new FormControl('', [
-      Validators.required
+      Validators.required, this.phoneNumberValidator()
     ]);
     this.inputEmailFormControl = new FormControl('', [
       Validators.required, Validators.email
@@ -67,10 +69,10 @@ export class SignUpComponent {
       Validators.required
     ]);
     this.inputPasswordFormControl = new FormControl('', [
-      Validators.required
+      Validators.required, this.confirmPasswordValidator()
     ]);
     this.inputConfirmPasswordFormControl = new FormControl('', [
-      Validators.required
+      Validators.required, this.confirmPasswordValidator()
     ]);
     this.inputSecretQuestionFormControl = new FormControl('', [
       Validators.required
@@ -109,7 +111,7 @@ export class SignUpComponent {
   handleSuccess(authResponse: AuthResponse) {
     this.authState.token = authResponse.token;
     this.authState.user = authResponse.user;
-    this.appState.showAuthDialog = false;
+    this.appState.showPopupState.next('');
   }
 
   handleError(error) {
@@ -118,5 +120,41 @@ export class SignUpComponent {
     this.errorMessage = 'Неверно введены логин или пароль';
     this.cd.detectChanges();
     console.log('error= ', error);
+  }
+
+
+
+  get isShowAdditions(){
+    return this.isShowConfirmPassword &&
+      this.inputConfirmPasswordFormControl.dirty
+  }
+
+  get isShowConfirmPassword() {
+    console.log(this.inputEmailFormControl)
+    return this.inputFirstNameFormControl.dirty &&
+      this.inputLastNameFormControl.dirty &&
+      this.inputPhoneNumberFormControl.dirty &&
+      this.inputEmailFormControl.dirty &&
+      this.inputUsernameFormControl.dirty &&
+      this.inputPasswordFormControl.dirty
+  }
+
+  confirmPasswordValidator(): ValidatorFn {
+
+    return (): { [key: string]: any } | null => {
+      const passwordControlValue = this.inputPasswordFormControl && this.inputPasswordFormControl.value || '';
+      const confirmPasswordControlValue = this.inputConfirmPasswordFormControl && this.inputConfirmPasswordFormControl.value || '';
+      const forbidden = (passwordControlValue !==  confirmPasswordControlValue)
+        && this.inputPasswordFormControl.dirty
+        && this.inputConfirmPasswordFormControl.dirty;
+      return forbidden ? {'error message': {value: 'Подтвердите пароль правильно'}} : null;
+    };
+  }
+
+  phoneNumberValidator(): ValidatorFn {
+    return (formControl: AbstractControl): { [key: string]: any } | null => {
+      const phoneRefExp = new RegExp(/[+][\d{1}][(]\d{3}[)][ ]\d{3}[-]\d{4}/);
+      return phoneRefExp.test(formControl.value) ? null: {'error message': {value: 'Неверно введен номер'}}
+    };
   }
 }

@@ -17,7 +17,7 @@ export class CreateTodoComponent {
 
   createTodo() {
     this.todoService.createTodo(this.todoName).then(()=> {
-      this.appState.showCreateDialog = false;
+      this.appState.showPopupState.next('');
     });
   }
 }

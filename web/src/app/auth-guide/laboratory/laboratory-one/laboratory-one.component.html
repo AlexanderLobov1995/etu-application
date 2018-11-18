@@ -1,3 +1,87 @@
-<p>
-  laboratory-one works!
-</p>
+<div class="container">
+  <h1>Основы web-безопасности.</h1>
+  <article>
+    <p>
+      <b>Аутентификация</b> — это процесс проверки подлинности чего-либо. Термин чаще всего используется в среде информационных технологий. Примером аутентификации может быть сравнение пароля, введенного пользователем, с паролем, который сохранен в базе данных сервера.
+    </p>
+    <p>
+      <b>Идентификация</b> —  это присвоение субъектам и объектам идентификатора и / или сравнение идентификатора с перечнем присвоенных идентификаторов.
+    </p>
+    <p>
+      <b>Авторизация</b> — это предоставление определённому лицу или группе лиц прав на выполнение определённых действий.
+    </p>
+  </article>
+  <div class="image"></div>
+  <h2>Указания по выполнению лабораторной работы:</h2>
+  <ol>
+    <li>Ввести идентификатор.</li>
+    <li>Ввести пароль. Пройти аутентицикацию.</li>
+    <li>Убедиться, что пользователь найден.</li>
+    <li>Используя ролевую политику безопасности, продоставьте права. (create, update, delete, get)</li>
+  </ol>
+  <h3>Дана таблица:</h3>
+  <table>
+    <tr>
+      <td>Id</td>
+      <td>Имя</td>
+      <td>Фамилия</td>
+      <td>Логин</td>
+      <td>Пароль</td>
+      <td>Роль</td>
+    </tr>
+    <tr *ngFor="let user of users" [class.found]="user === foundUser">
+      <td>{{user.id}}</td>
+      <td>{{user.firstName}}</td>
+      <td>{{user.lastName}}</td>
+      <td>{{user.login}}</td>
+      <td>{{user.password}}</td>
+      <td>{{user.role}}</td>
+    </tr>
+  </table>
+  <h2>Шаг № 1: Идентификация</h2>
+  <p>Введите идентификатор (логин):</p>
+  <form [formGroup]="inputFormGroup">
+    <app-input [appFormControl]="inputUsernameFormControl" labelName="логин(идентификатор)" placeholder="Введите логин..."></app-input>
+  </form>
+  <ng-container *ngIf="isShowStep2" @myAnimation>
+    <h2>Шаг № 2: Аутентификация</h2>
+    <p>Введите пароль, с помощью которого, можно проверить, что пользователь подлиный.</p>
+    <form [formGroup]="inputFormGroup">
+      <app-input [appFormControl]="inputPasswordFormControl" labelName="пароль(секретный ключ)" placeholder="Введите пароль..." type="password"></app-input>
+    </form>
+  </ng-container>
+  <ng-container *ngIf="isShowConfirmCredentials" @myAnimation>
+    <p>Еще раз убедитесь в правильности введенных данных. Если все верно, нажмите <b>проверить</b></p>
+    <form (submit)="checkUser()" [formGroup]="inputFormGroup">
+      <app-input [appFormControl]="inputUsernameFormControl" labelName="логин" placeholder="Введите логин..."></app-input>
+      <app-input [appFormControl]="inputPasswordFormControl" labelName="пароль" placeholder="Введите пароль..." type="password"></app-input>
+      <app-button [inputFormGroup]="inputFormGroup"  value="Проверить" (submit)="checkUser()"></app-button>
+    </form>
+  </ng-container>
+  <ng-container *ngIf="isShowStep3" @myAnimation>
+    <h2>Шаг № 3: Авторизация</h2>
+    <p>Теперь когда пользователь установлен и его подленость подтверждена, нужно определиться какими правами будет он обладать.</p>
+    <p>Данное ПО использует ролевую политику безопасности, где каждому пользователю присваивается опредлеленная роль. Пользователь с ролью более высшеего уровня наследует права с уровнем меньшего.</p>
+    <p>Например, существуют роли:</p>
+    <ul>
+      <li>Guest(незарегистрированный пользователь) | security level = 0 | R(guest) = ZERO</li>
+      <li>User(пользователь) | security level = 1 | R(user) = R(guest) && (GET, UPDATE)</li>
+      <li>Admin(администратор) | security level = 2 | R(admin) = R(user) && (CREATE, DELETE)</li>
+    </ul>
+    <p> R(admin) > R(user) > R(guest)</p>
+    <p>Теперь перечислите для найденного пользователя права:</p>
+    <form (submit)="checkRights()">
+      <div class="checkbox-container">
+        <div><input [formControl]="inputGetFormControl" type="checkbox" value="GET"/>GET</div>
+        <div><input [formControl]="inputCreateFormControl" type="checkbox" value="CREATE"/>CREATE</div>
+        <div><input [formControl]="inputUpdateFormControl" type="checkbox" value="UPDATE"/>UPDATE</div>
+        <div><input [formControl]="inputDeleteFormControl" type="checkbox" value="DELETE"/>DELETE</div>
+      </div>
+      <div *ngIf="showErrorMessageRules" @myAnimation class="error-message">Неправильно, попробуйте еще раз!</div>
+      <app-button value="Проверить" (submit)="checkRights()"></app-button>
+    </form>
+  </ng-container>
+  <div *ngIf="isCompleted" class="completed">
+    Поздравляем! Данная работа пройдена!
+  </div>
+</div>

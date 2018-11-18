@@ -4,10 +4,12 @@ import { LaboratoryTwoComponent } from './laboratory-two/laboratory-two.componen
 import { LaboratoryThreeComponent } from './laboratory-three/laboratory-three.component';
 import { LaboratoryFourComponent } from './laboratory-four/laboratory-four.component';
 import {SharedModule} from "../shared/shared.module";
+import {UiKitModule} from "../ui-kit/ui-kit.module";
 
 @NgModule({
   imports: [
-    SharedModule
+    SharedModule,
+    UiKitModule
   ],
   declarations: [LaboratoryOneComponent, LaboratoryTwoComponent, LaboratoryThreeComponent, LaboratoryFourComponent],
   exports: [LaboratoryOneComponent, LaboratoryTwoComponent, LaboratoryThreeComponent, LaboratoryFourComponent]

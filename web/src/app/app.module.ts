@@ -21,6 +21,9 @@ import {CreateTodoComponent} from './auth-guide/todo/createTodo/createTodo.compo
 import {UpdateTodoComponent} from './auth-guide/todo/updateTodo/updateTodo.component';
 import {UiKitModule} from './auth-guide/ui-kit/ui-kit.module';
 import {LaboratoryModule} from "./auth-guide/laboratory/laboratory.module";
+import { PageOneComponent } from './auth-guide/pages/page-one/page-one.component';
+import { PageTwoComponent } from './auth-guide/pages/page-two/page-two.component';
+import { PageThreeComponent } from './auth-guide/pages/page-three/page-three.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,10 @@ import {LaboratoryModule} from "./auth-guide/laboratory/laboratory.module";
     CreateTodoComponent,
     UpdateTodoComponent,
     TodoAreaComponent,
-    TogoLoggerComponent
+    TogoLoggerComponent,
+    PageOneComponent,
+    PageTwoComponent,
+    PageThreeComponent
   ],
   imports: [
     BrowserModule,

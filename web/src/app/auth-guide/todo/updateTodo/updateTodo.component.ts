@@ -30,7 +30,7 @@ export class UpdateTodoComponent implements OnInit {
       status: this.status
     };
     this.todoService.update(todo).then(()=> {
-      this.appState.showUpdateDialog = false;
+      this.appState.showPopupState.next('');
     });
   }
 }
