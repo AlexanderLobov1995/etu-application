@@ -1,0 +1,55 @@
+:host
+  .jwt-container
+    display flex
+    width 80vw
+    height 50vh
+    justify-content space-between
+  .decoded, .encoded
+    width 45%
+  textarea, input
+    width 100%
+    padding 0
+    border none
+    resize none
+  .encoded-container, .decoded-container
+    height 80%
+    border 2px solid lightgray
+  .encoded-container
+    overflow-wrap: break-word
+    font-size 40px
+    overflow: auto
+  .decoded-container
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+  .decoded-container > div, .decoded-container > input
+    height 5%
+  .decoded-container > textarea
+    height 40%
+  .decoded-container > *
+    border-bottom 2px solid lightgray
+    padding 0 10px
+    box-sizing border-box
+  .header + textarea
+    color: red
+  .payload + textarea
+    color: purple
+  .signature + input
+    color: #00bbd2
+  .structure-container
+    display flex
+  .structure-header, .structure-payload, .structure-signature
+    width 33%
+    padding: 10px
+    border: 2px solid lightgray
+    overflow-wrap: break-word
+    box-sizing: border-box
+  .message-box
+    text-align center
+    margin 10px 0
+    padding 10px
+    background-color lightgray
+    color darkred
+    &.completed
+      background-color lightgreen
+      color white

@@ -23,7 +23,7 @@ proxy.on('proxyRes', function (proxyRes, req, res) {
     modifyResponse(res, proxyRes.headers['content-encoding'], function (body) {
         const resBody = body && JSON.parse(body) || {error: 'something wrong'};
         res.writeHead(res.statusCode, headers);
-        if (req.url.startsWith('/auth') && !resBody.error ) {
+        if (req.url.startsWith('/auth') && !req.url.startsWith('/auth/jwt-token') && !resBody.error ) {
             cacheToken.set(resBody.sessionToken, resBody.jwtToken);
             return JSON.stringify({
                 user: resBody.user,
@@ -36,7 +36,7 @@ proxy.on('proxyRes', function (proxyRes, req, res) {
 
 
 https.createServer(options, (req, res) => {
-    if(req.url.startsWith('/auth') || req.url.startsWith('/todos')){
+    if((req.url.startsWith('/auth') || req.url.startsWith('/todos')) && req.method !=='OPTIONS') {
         const reqToken = (req.headers.authorization || '').replace('Bearer ', '');
         const jwtToken = cacheToken.get(reqToken);
         if(jwtToken){

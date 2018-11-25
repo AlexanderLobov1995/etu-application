@@ -12,7 +12,7 @@ const options = {
 };
 
 https.createServer(options, (req, res) => {
-    if(req.url.startsWith('/auth/login')) {
+    if(req.url.endsWith('/login')) {
         parseFormdata(req, (err, data) => {
             const {fields} = data || {};
             const username = fields && fields.username || '';
@@ -50,7 +50,7 @@ https.createServer(options, (req, res) => {
         });
         return;
     }
-    if(req.url.startsWith('/auth/signup')) {
+    if(req.url.endsWith('/signup')) {
         parseFormdata(req, (err, data) => {
             const {fields} = data || {};
             const firstName = fields && fields.firstName || '';
@@ -91,6 +91,33 @@ https.createServer(options, (req, res) => {
                     res.writeHead(500);
                     res.end(JSON.stringify({error: 'data center is broken'}));
                 });
+        });
+        return;
+    }
+    if(req.url.endsWith('/jwt-token')) {
+        console.log('ddedada')
+        parseFormdata(req, (err, data) => {
+            try {
+                const {fields} = data || {};
+                const header = fields && fields.header || '';
+                const headerObj = JSON.parse(header);
+                const payload = fields && fields.payload || '';
+                const payloadObj = JSON.parse(payload)
+                const key = fields && fields.key || 'jwt-key';
+
+                const jwtToken = jwt.sign(payloadObj, key, {
+                    noTimestamp: true,
+                    header: headerObj
+                });
+                console.log(headerObj)
+                console.log(payloadObj)
+                res.writeHead(200);
+                res.end(JSON.stringify(jwtToken));
+            } catch (e) {
+                console.log(e)
+                res.writeHead(400);
+                res.end(JSON.stringify({error: 'incorrect'}));
+            }
         });
         return;
     }

@@ -1,3 +1,79 @@
-<p>
-  laboratory-two works!
-</p>
+<h1>Генерация JWT-токена</h1>
+<p>Самый простой подход для аутентификации в REST это отправка логина и пароля пользователя при каждом запросе. Понятно, что такой способ не безопасен, особенно если клиент использует незащищенный протокол.</p>
+<p>Более привычное решение — сопоставление пользователя некому уникальному идентификатору — токену. При первом логине клиенту от сервера выдается токен, образованный хеш-функцией от каких-нибудь уникальных данных пользователя (id, логин, пароль). В базу заносится пара токен — id. При следующих запросах клиент передает этот токен, а сервер ищет в базе запись. Если запись найдена, пользователя авторизуют. Часто, для большей безопасности, токену дают определенное время жизни, после которого он становится недействителен.</p>
+<p>Одной из реализаций является JSON Web Token (JWT). Он самодостаточен, все необходимые для аутентификации данные можно хранить в самом токене. Последовательно рассмотрим устройство токена.</p>
+<h2>Структура</h2>
+<p>JWT состоит из трех основных частей: заголовка (header), нагрузки (payload) и подписи (signature). Заголовок и нагрузка формируются отдельно, а затем на их основе вычисляется подпись.</p>
+<div class="structure-container">
+  <div class="structure-header">
+    <h3><b>Header</b></h3>
+    <p>Обычно заголовок состоит из двух полей: типа токена (в данном случае JWT) и алгоритма хэширования подписи:</p>
+    <ul>
+      <li>"typ": "JWT"</li>
+      <li>"alg": "HS256"</li>
+    </ul>
+  </div>
+  <div class="structure-payload">
+    <h3><b>Payload</b></h3>
+    <p>Payload — это любые данные, которые вы хотите передать в токене. Но стандарт предусматривает несколько зарезервированных полей:</p>
+    <ul>
+      <li>iss — (issuer) издатель токена</li>
+      <li>sub — (subject) "тема", назначение токена</li>
+      <li>aud — (audience) аудитория, получатели токена</li>
+      <li>exp — (expire time) срок действия токена</li>
+      <li>nbf — (not before) срок, до которого токен не действителен</li>
+      <li>iat — (issued at) время создания токена</li>
+      <li>jti — (JWT id) идентификатор токена</li>
+    </ul>
+    <p>Payload не шифруется при использовании токена, поэтому не стоит передавать в нем данные, которые не должны попасть в открытый доступ.</p>
+  </div>
+  <div class="structure-signature">
+    <h3><b>Signature</b></h3>
+    <p>Подпись вычисляется на основе заголовка и нагрузки. Таким образом, если кто-то попытается изменить данные в токене, он не сможет изменить подпись, не зная приватного ключа. При аутентификации приватным ключом может выступать пароль пользователя (или хеш от пароля). Сначала header и payload приводятся к формату JSON, а затем переводятся в base64:</p>
+    <ul>
+      <li><b>Header</b>: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9</li>
+      <li><b>Payload</b>: eyJpc3MiOiJDb2RleCBUZWFtIiwic3ViIjoiYXV0aCIsImV4cCI6MTUwNTQ2Nzc1Njg2OSwiaWF0IjoxNTA1NDY3MTUyMDY5LCJ1c2VyIjoxfQ</li>
+    </ul>
+    <p>Затем, две эти строки соединяются через точку и хэшируются указанным в header алгоритмом. Допустим, пользователь использует пароль password:</p>
+    <p>HS256('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9' + '.' + 'eyJpc3MiOiJDb2RleCBUZWFtIiwic3ViIjoiYXV0aCIsImV4cCI6MTUwNTQ2Nzc1Njg2OSwiaWF0IjoxNTA1NDY3MTUyMDY5LCJ1c2VyIjoxfQ', 'password') = '0ynjTRZT9Uk77TnGy_g9Mxi1decLBjKxQK6e2dVzDJo'</p>
+    <p>Результат работы алгоритма и есть подпись. Теперь осталось только сформировать сам токен, для этого нужно через точку соединить header и payload в base64 и подпись:</p>
+    <p>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJDb2RleCBUZWFtIiwic3ViIjoiYXV0aCIsImV4cCI6MTUwNTQ2Nzc1Njg2OSwiaWF0IjoxNTA1NDY3MTUyMDY5LCJ1c2VyIjoxfQ.0ynjTRZT9Uk77TnGy_g9Mxi1decLBjKxQK6e2dVzDJo</p>
+  </div>
+</div>
+<h3>Более подробную информацию можете найти в справочнике Authorization Guide.</h3>
+<h3>Аутентификация</h3>
+<p>После первого логина, клиенту возвращается сгенерированный сервером JWT. При каждом следующем запросе, клиент должен передавать JWT установленным API способом (например, через заголовок или как параметр запроса). Сервер декодирует header и payload и проверяет зарезервированные поля. Если все в порядке, по указанному в header алгоритму составляется подпись. Если полученная подпись совпадает с переданной, пользователя авторизуют. Можно реализовать всю эту схему вручную, а можно использовать одну из библиотек указанных на jwt.io.</p>
+<h2>Указания по выполнению лабораторной работы:</h2>
+<p>Сгенерировать jwt-токен, в котором включены:</p>
+<ol>
+  <li>name(имя): ivan</li>
+  <li>lastname(фамилия): ivanov</li>
+  <li>age(возраст): 23</li>
+  <li>аудитория: admin</li>
+  <li>subject: learn jwt</li>
+  <li>issuer (издатель токена): ivan ivanov</li>
+  <li>alg (алгоритм): HS512</li>
+  <li>key (ключ): etu</li>
+</ol>
+<div [formGroup]="inputFormGroup" class="jwt-container">
+  <div class="encoded">
+    <h3>Encoded</h3>
+    <div class="encoded-container"> {{jwtToken | async}}
+    </div>
+  </div>
+  <div class="decoded">
+    <h3>Decoded</h3>
+    <div class="decoded-container">
+      <div class="header">HEADER:</div>
+      <textarea [formControl]="headerFormControl"></textarea>
+      <div class="payload">PAYLOAD:</div>
+      <textarea [formControl]="payloadFormControl"></textarea>
+      <div class="signature">VERIFY SIGNATURE:</div>
+      <input [formControl]="signatureFormControl" placeholder="Введите ключ для криптографической подписи (По умолчанию: jwt-key)..." type="text"/>
+    </div>
+  </div>
+</div>
+<div *ngIf="isShowMessage" [class.completed]="isCompleted" class="message-box">
+ {{message}}
+</div>
+<app-button *ngIf="!isCompleted" value="Проверить" (click)="check()"></app-button>

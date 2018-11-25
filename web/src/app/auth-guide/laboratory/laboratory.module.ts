@@ -5,12 +5,14 @@ import { LaboratoryThreeComponent } from './laboratory-three/laboratory-three.co
 import { LaboratoryFourComponent } from './laboratory-four/laboratory-four.component';
 import {SharedModule} from "../shared/shared.module";
 import {UiKitModule} from "../ui-kit/ui-kit.module";
+import {LaboratoryService} from "./laboratory.service";
 
 @NgModule({
   imports: [
     SharedModule,
     UiKitModule
   ],
+  providers: [LaboratoryService],
   declarations: [LaboratoryOneComponent, LaboratoryTwoComponent, LaboratoryThreeComponent, LaboratoryFourComponent],
   exports: [LaboratoryOneComponent, LaboratoryTwoComponent, LaboratoryThreeComponent, LaboratoryFourComponent]
 })
