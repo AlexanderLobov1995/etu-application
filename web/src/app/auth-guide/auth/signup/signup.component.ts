@@ -5,6 +5,7 @@ import {AuthService} from '../auth.service';
 import {animate, style, transition, trigger} from "@angular/animations";
 import {AuthResponse} from "../auth-interfaces";
 import {AuthGuideState} from "../../auth-guide-state";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-signup',
@@ -30,7 +31,6 @@ import {AuthGuideState} from "../../auth-guide-state";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SignUpComponent {
-
   inputFormGroup: FormGroup;
 
   inputFirstNameFormControl: FormControl;
@@ -42,10 +42,11 @@ export class SignUpComponent {
   inputConfirmPasswordFormControl: FormControl;
   inputSecretQuestionFormControl: FormControl;
   inputSecretAnswerFormControl: FormControl;
+  inputAdminFormControl: FormControl;
 
-  errorMessage = '';
+  errorMessage = new BehaviorSubject('');
 
-  mask = ['+','7', '(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  phoneMask = ['+','7', '(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
   constructor(public authService: AuthService,
               private authState: AuthState,
@@ -80,6 +81,7 @@ export class SignUpComponent {
     this.inputSecretAnswerFormControl = new FormControl('', [
       Validators.required
     ]);
+    this.inputAdminFormControl =  new FormControl(false);
     this.inputFormGroup = new FormGroup({
       firstName: this.inputFirstNameFormControl,
       lastName: this.inputLastNameFormControl,
@@ -88,7 +90,8 @@ export class SignUpComponent {
       username: this.inputUsernameFormControl,
       password: this.inputPasswordFormControl,
       secretQuestion: this.inputSecretQuestionFormControl,
-      secretAnswer: this.inputSecretAnswerFormControl
+      secretAnswer: this.inputSecretAnswerFormControl,
+      admin: this.inputAdminFormControl
     });
   }
 
@@ -102,24 +105,26 @@ export class SignUpComponent {
         this.inputUsernameFormControl.value,
         this.inputPasswordFormControl.value,
         this.inputSecretQuestionFormControl.value,
-        this.inputSecretAnswerFormControl.value
+        this.inputSecretAnswerFormControl.value,
+        this.inputAdminFormControl.value
         ).subscribe((authResponse: AuthResponse) => this.handleSuccess(authResponse),
         (error) => this.handleError(error));
     }
   }
 
   handleSuccess(authResponse: AuthResponse) {
-    this.authState.token = authResponse.token;
+    this.authState.token.next(authResponse.token);
     this.authState.user = authResponse.user;
     this.appState.showPopupState.next('');
   }
 
   handleError(error) {
-    this.inputUsernameFormControl.setErrors({error});
-    this.inputPasswordFormControl.setErrors({error});
-    this.errorMessage = 'Неверно введены логин или пароль';
-    this.cd.detectChanges();
-    console.log('error= ', error);
+    if(error.status === 300) {
+      this.appState.tempUserId.next(error.error.userId);
+      this.appState.showPopupState.next('showAnswerDialog');
+      return;
+    }
+    this.errorMessage.next('Что-то пошло не так');
   }
 
 
@@ -130,7 +135,6 @@ export class SignUpComponent {
   }
 
   get isShowConfirmPassword() {
-    console.log(this.inputEmailFormControl)
     return this.inputFirstNameFormControl.dirty &&
       this.inputLastNameFormControl.dirty &&
       this.inputPhoneNumberFormControl.dirty &&

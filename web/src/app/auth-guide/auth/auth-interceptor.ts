@@ -22,7 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const authState = this.injector.get(AuthState);
     const subAuthReq = req.clone({
       setHeaders: {
-        authorization: `Bearer ${authState.token}`
+        authorization: `Bearer ${authState.token.getValue()}`
       }
     });
     return next.handle(subAuthReq)

@@ -2,8 +2,8 @@
 <div [class.menu-active]="menuActive" class="menu-container">
     <button (click)="toggleMenu()" class="menu-button" #menu><app-icon ic="menu"></app-icon></button>
     <div class="menu">
-        <button *ngIf="!authState.token" (click)="open('showAuthDialog')">Войти</button>
-        <button *ngIf="authState.token" (click)="logout()">Выйти</button>
+        <button *ngIf="!authState.token.getValue()" (click)="open('showAuthDialog')">Войти</button>
+        <button *ngIf="authState.token.getValue()" (click)="logout()">Выйти</button>
         <button (click)="open('showLogger')">Логирование</button>
         <button (click)="open('showLaboratoryOne')">Лабораторная работа № 1</button>
         <button (click)="open('showLaboratoryTwo')">Лабораторная работа № 2</button>

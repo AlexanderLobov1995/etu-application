@@ -16,17 +16,18 @@ export class AuthService {
     return this.httpClient.post('https://localhost:8081/auth/login', formData);
   }
 
-  answer(answer: string, confirmAnswer: string) {
+  answer(question: string, answer: string, userId) {
     const formData = new FormData();
+    formData.append('userId', userId);
+    formData.append('question', question);
     formData.append('answer', answer);
-    formData.append('confirmAnswer', confirmAnswer);
     return this.httpClient.post('https://localhost:8081/auth/answer', formData);
   }
 
   signUp(firstName: string, lastName: string,
          phoneNumber: string, email: string,
          username: string, password: string,
-         secretQuestion: string, secretAnswer: string) {
+         secretQuestion: string, secretAnswer: string, admin: boolean) {
     const formData = new FormData();
     formData.append('firstName', firstName);
     formData.append('lastName', lastName);
@@ -36,6 +37,7 @@ export class AuthService {
     formData.append('password', password);
     formData.append('secretQuestion', secretQuestion);
     formData.append('secretAnswer', secretAnswer);
+    formData.append('role', admin? 'admin': 'user');
     return this.httpClient.post('https://localhost:8081/auth/signup', formData);
   }
 

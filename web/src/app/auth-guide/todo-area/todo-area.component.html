@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="button-content">
-          <button *ngIf="authState.accessCreate" (mySubmit)="appState.showCreateDialog = true">Создать</button>
+          <button *ngIf="authState.accessCreate" (mySubmit)="appState.showPopupState.next('showCreateDialog')">Создать</button>
           <button *ngIf="authState.accessDelete" (mySubmit)="deleteTodos()">Удалить</button>
         </div>
     </div>

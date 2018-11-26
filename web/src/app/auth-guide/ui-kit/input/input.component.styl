@@ -1,6 +1,6 @@
 :host
   .input-container
-    margin: 16px 0
+    margin-top: 16px
     position: relative
   .input-container:after
     display:block
@@ -8,12 +8,12 @@
     bottom: 0
     content: ''
     width: 100%
-    border-bottom: solid 2px #00bbd2
+    border-bottom: solid 2px rgb(65, 168, 201)
     transform: scaleX(0)
     transition: transform 250ms ease-in-out
   &.active
     label
-      color: #00bbd2
+      color: rgb(65, 168, 201)
     .input-container:after
       transform: scaleX(1)
   &.incorrect
@@ -40,6 +40,8 @@
     border-bottom: 1px solid darkgrey
     outline: none
   .error-message
-    color: #C51162
-    margin: 10px 0;
+    margin 2px 0
+    padding: 4px
+    color: white
+    background-color #C51162
 

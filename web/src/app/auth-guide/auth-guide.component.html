@@ -2,7 +2,7 @@
   <app-header></app-header>
   <div class="content">
     <app-navigation></app-navigation>
-    <app-page-one *ngIf="navigationState.page === 0" [showStartPage]="showStartPage"
+    <app-page-one *ngIf="navigationState.page === 0" [showStartPage]="showStartPage | async"
          class="page page-1"
          [@myAnimation]="navigationState.status | async">
     </app-page-one>

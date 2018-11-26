@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Level, Role, User} from './auth-interfaces';
+import {BehaviorSubject} from "rxjs";
 
 @Injectable()
 export class AuthState {
-  token = '';
+  token = new BehaviorSubject('');
   user: User;
 
   showAuthDialog = false;

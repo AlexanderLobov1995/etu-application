@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import {AuthGuideState} from '../auth-guide-state';
 import {AuthState} from '../auth/auth-state';
+import {AuthService} from "../auth/auth.service";
 
 @Component({
   selector: 'app-header',
@@ -17,15 +18,16 @@ export class HeaderComponent {
   @ViewChild('menu') menu: ElementRef;
   menuActive = false;
 
-  constructor(public authState: AuthState, public appState: AuthGuideState) {
-  }
+  constructor(public authState: AuthState, public appState: AuthGuideState, private authService: AuthService) {}
 
   toggleMenu() {
     this.menuActive = !this.menuActive;
   }
 
   logout() {
-    this.authState.token = '';
+    this.authService.logout().toPromise().then(()=>{
+      this.authState.token.next('');
+    })
   }
 
   open(value) {

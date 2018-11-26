@@ -45,6 +45,8 @@ export class AuthGuideComponent {
               public loggerState: LoggerState) {
   }
 
+  showStartPage = this.authState.token
+
   onClosePopup() {
     this.appState.hideDialog();
   }
@@ -56,10 +58,6 @@ export class AuthGuideComponent {
   get pageStatus() {
     console.log(this.navigationState.status)
     return this.navigationState.status;
-  }
-
-  get showStartPage() {
-    return !this.authState.token;
   }
 
 }

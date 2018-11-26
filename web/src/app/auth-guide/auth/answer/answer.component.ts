@@ -14,8 +14,8 @@ export class AnswerComponent implements OnInit {
 
 
   inputFormGroup: FormGroup;
+  inputSecretQuestionFormControl: FormControl;
   inputAnswerFormControl: FormControl;
-  inputConfirmAnswerFormControl: FormControl;
 
   errorMessage = '';
 
@@ -26,35 +26,34 @@ export class AnswerComponent implements OnInit {
 
   answer() {
     if (this.inputFormGroup.valid) {
-      this.authService.answer(this.inputAnswerFormControl.value, this.inputConfirmAnswerFormControl.value)
+      this.authService.answer(this.inputSecretQuestionFormControl.value, this.inputAnswerFormControl.value, this.appState.tempUserId.getValue())
         .subscribe((authResponse: AuthResponse) => this.handleSuccess(authResponse), (error) => this.handleError(error));
     }
   }
 
 
   handleSuccess(authResponse: AuthResponse) {
-    this.authState.token = authResponse.token;
+    this.authState.token.next(authResponse.token);
     this.authState.user = authResponse.user;
     this.appState.showPopupState.next('');
+    this.appState.tempUserId.next('');
   }
 
   handleError(error) {
-    this.inputAnswerFormControl.setErrors({error});
-    this.inputConfirmAnswerFormControl.setErrors({error});
     this.errorMessage = 'Неверно введены логин или пароль';
     this.cd.detectChanges();
   }
 
   ngOnInit() {
+    this.inputSecretQuestionFormControl = new FormControl('', [
+      Validators.required
+    ]);
     this.inputAnswerFormControl = new FormControl('', [
       Validators.required
     ]);
-    this.inputConfirmAnswerFormControl = new FormControl('', [
-      Validators.required
-    ]);
     this.inputFormGroup = new FormGroup({
-      answer: this.inputAnswerFormControl,
-      confirmAnswer: this.inputConfirmAnswerFormControl
+      secretQuestion: this.inputSecretQuestionFormControl,
+      answer: this.inputAnswerFormControl
     });
   }
 

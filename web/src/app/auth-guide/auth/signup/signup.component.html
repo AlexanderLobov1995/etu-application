@@ -1,15 +1,23 @@
 <form (submit)="signUp()" [formGroup]="inputFormGroup">
-  <app-input [appFormControl]="inputFirstNameFormControl" labelName="*имя" placeholder="Введите имя..."></app-input>
-  <app-input [appFormControl]="inputLastNameFormControl" labelName="*фамилия" placeholder="Введите фамилию..."></app-input>
-  <app-input [appFormControl]="inputPhoneNumberFormControl" [textMask]="{mask: mask}" labelName="*телефон" placeholder="Введите номер..."></app-input>
-  <app-input [appFormControl]="inputEmailFormControl" labelName="*эл. адрес" placeholder="Введите эл. адрес..."></app-input>
-  <app-input [appFormControl]="inputUsernameFormControl" labelName="*логин" placeholder="Введите логин..."></app-input>
-  <app-input [appFormControl]="inputPasswordFormControl" labelName="*пароль" placeholder="Введите пароль..." type="password"></app-input>
+  <app-input [appFormControl]="inputFirstNameFormControl" labelName="Имя" placeholder="Введите имя..."></app-input>
+  <app-input [appFormControl]="inputLastNameFormControl" labelName="Фамилия" placeholder="Введите фамилию..."></app-input>
+  <app-input [appFormControl]="inputPhoneNumberFormControl" [textMask]="{mask: phoneMask}" labelName="Телефон" placeholder="Введите номер..."></app-input>
+  <app-input [appFormControl]="inputEmailFormControl" labelName="Эл. адрес" placeholder="Введите эл. адрес..."></app-input>
+  <app-input [appFormControl]="inputUsernameFormControl" labelName="Логин" placeholder="Введите логин..."></app-input>
+  <app-input [appFormControl]="inputPasswordFormControl" labelName="Пароль" placeholder="Введите пароль..." type="password"></app-input>
   <app-input *ngIf="isShowConfirmPassword" @myAnimation
-             [appFormControl]="inputConfirmPasswordFormControl" labelName="*пароль" placeholder="Подтвердите пароль..." type="password"></app-input>
+             [appFormControl]="inputConfirmPasswordFormControl" labelName="Пароль" placeholder="Подтвердите пароль..." type="password"></app-input>
   <ng-container *ngIf="isShowAdditions">
-    <app-input @myAnimation [appFormControl]="inputSecretQuestionFormControl" labelName="*вопрос" placeholder="Выберете вопрос..."></app-input>
-    <app-input @myAnimation [appFormControl]="inputSecretAnswerFormControl" labelName="*ответ" placeholder="Введите ответ..."></app-input>
+    <select  @myAnimation [formControl]="inputSecretQuestionFormControl"
+      name="inputSecretQuestionFormControl" id="inputSecretQuestionFormControl">
+      <option value="Фамилия вашей матери">Фамилия вашей матери</option>
+      <option value="Ваша любимая еда">Ваша любимая еда</option>
+      <option value="Имя вашего лучшего друга">Имя вашего лучшего друга</option>
+      <option value="Дата вашего рождения">Дата вашего рождения</option>
+    </select>
+    <app-input @myAnimation [appFormControl]="inputSecretAnswerFormControl" labelName="Ответ" placeholder="Введите ответ..."></app-input>
+    <div @myAnimation class="admin-check">Администратор?<input [formControl]="inputAdminFormControl" type="checkbox"/></div>
   </ng-container>
+  <div *ngIf="errorMessage | async" @myAnimation class="error-message">{{errorMessage | async}}</div>
   <app-button [inputFormGroup]="inputFormGroup"  value="Зарегистрироваться" (submit)="signUp()"></app-button>
 </form>

@@ -6,6 +6,7 @@ import {AuthState} from '../auth-state';
 import {AuthService} from '../auth.service';
 import * as jwt from 'jsonwebtoken';
 import {AuthResponse} from "../auth-interfaces";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -32,21 +33,15 @@ import {AuthResponse} from "../auth-interfaces";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit {
-  @ViewChild('authForm') authForm: NgForm;
-
-  username = '';
-  password = '';
-
   inputFormGroup: FormGroup;
   inputUsernameFormControl: FormControl;
   inputPasswordFormControl: FormControl;
 
-  errorMessage = '';
+  errorMessage = new BehaviorSubject('');
 
   constructor(public authService: AuthService,
               private authState: AuthState,
-              private appState: AuthGuideState,
-              private cd: ChangeDetectorRef) {
+              private appState: AuthGuideState) {
   }
 
   login() {
@@ -58,17 +53,22 @@ export class LoginComponent implements OnInit {
 
 
   handleSuccess(authResponse: AuthResponse) {
-    this.authState.token = authResponse.token;
+    this.authState.token.next(authResponse.token);
     this.authState.user = authResponse.user;
     this.appState.showPopupState.next('');
   }
 
   handleError(error) {
-    this.inputUsernameFormControl.setErrors({error});
-    this.inputPasswordFormControl.setErrors({error});
-    this.errorMessage = 'Неверно введены логин или пароль';
-    this.cd.detectChanges();
-    console.log('error= ', error);
+    if(error.status === 300) {
+      this.appState.tempUserId.next(error.error.userId);
+      this.appState.showPopupState.next('showAnswerDialog');
+      return;
+    }
+    if(error.status === 401) {
+      this.inputUsernameFormControl.setErrors({error});
+      this.inputPasswordFormControl.setErrors({error});
+      this.errorMessage.next('Неверно введены логин или пароль');
+    }
   }
 
   ngOnInit() {

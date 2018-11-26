@@ -1,5 +1,11 @@
 <form (submit)="answer()" [formGroup]="inputFormGroup">
-  <app-input [appFormControl]="inputAnswerFormControl" labelName="логин" placeholder="Ответ на вопрос..."></app-input>
-  <app-input [appFormControl]="inputConfirmAnswerFormControl" labelName="пароль" placeholder="Подтвердите ответ..." type="password"></app-input>
+  <select  [formControl]="inputSecretQuestionFormControl"
+           name="inputSecretQuestionFormControl" id="inputSecretQuestionFormControl">
+    <option selected value="Фамилия вашей матери">Фамилия вашей матери</option>
+    <option value="Ваша любимая еда">Ваша любимая еда</option>
+    <option value="Имя вашего лучшего друга">Имя вашего лучшего друга</option>
+    <option value="Дата вашего рождения">Дата вашего рождения</option>
+  </select>
+  <app-input [appFormControl]="inputAnswerFormControl" labelName="ответ на вопрос" placeholder="Ответ на вопрос..."></app-input>
   <app-button [inputFormGroup]="inputFormGroup"  value="Подтвердить" (submit)="answer()"></app-button>
 </form>
