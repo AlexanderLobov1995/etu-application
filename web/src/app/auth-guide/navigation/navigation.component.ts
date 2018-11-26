@@ -19,7 +19,7 @@ export class NavigationComponent {
   }
 
   goDown() {
-    if (this.navigationState.page < 2) {
+    if (this.navigationState.page < 3) {
       this.navigationState.page ++;
       this.navigationState.status.next('down');
     }

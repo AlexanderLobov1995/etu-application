@@ -14,6 +14,10 @@
          [@myAnimation]="navigationState.status | async"
          class="page">
     </app-page-three>
+    <app-page-four *ngIf="navigationState.page === 3"
+                    [@myAnimation]="navigationState.status | async"
+                    class="page">
+    </app-page-four>
   </div>
 </div>
 <app-popup [show]="appState.showPopupState | async" (close)="onClosePopup()">

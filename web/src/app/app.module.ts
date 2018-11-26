@@ -24,6 +24,7 @@ import {LaboratoryModule} from "./auth-guide/laboratory/laboratory.module";
 import { PageOneComponent } from './auth-guide/pages/page-one/page-one.component';
 import { PageTwoComponent } from './auth-guide/pages/page-two/page-two.component';
 import { PageThreeComponent } from './auth-guide/pages/page-three/page-three.component';
+import { PageFourComponent } from './auth-guide/pages/page-four/page-four.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { PageThreeComponent } from './auth-guide/pages/page-three/page-three.com
     TogoLoggerComponent,
     PageOneComponent,
     PageTwoComponent,
-    PageThreeComponent
+    PageThreeComponent,
+    PageFourComponent
   ],
   imports: [
     BrowserModule,
