@@ -21,85 +21,115 @@ let cacheToken = new Map();
 const proxy = new httpProxy.createProxyServer();
 proxy.on('proxyRes', function (proxyRes, req, res) {
     modifyResponse(res, proxyRes.headers['content-encoding'], function (body) {
-        try {
-            res.writeHead(res.statusCode, headers);
-            if ((req.url.startsWith('/auth/login') || req.url.startsWith('/auth/signup') || req.url.startsWith('/auth/answer')) && res.statusCode === 200) {
-                const resBody = body && JSON.parse(body) || {error: 'something wrong'};
-                cacheToken.set(resBody.sessionToken, resBody.jwtToken);
-                return JSON.stringify({
-                    user: resBody.user,
-                    token: resBody.sessionToken
-                });
-            }
-            return body;
-        } catch (e) {
-            res.writeHead(res.statusCode, headers);
-            return body;
+        res.writeHead(res.statusCode, headers);
+        if ((req.url.startsWith('/auth/login') || req.url.startsWith('/auth/signup') || req.url.startsWith('/auth/answer')) && res.statusCode === 200) {
+            const resBody = body && JSON.parse(body) || {errorMessage: 'something wrong'};
+            cacheToken.set(resBody.sessionToken, resBody.jwtToken);
+            return JSON.stringify({
+                user: resBody.user,
+                token: resBody.sessionToken
+            });
         }
+        return body;
     });
 });
 
-
 https.createServer(options, (req, res) => {
-    if (req.method === 'OPTIONS') {
-        optionsHandle(req, res);
-        return;
+    try {
+        if (req.method === 'OPTIONS') {
+            optionsHandle(req, res);
+            return;
+        }
+        if(req.url.startsWith('/auth')) {
+            authHandle(req, res);
+            return;
+        }
+        if (req.url.startsWith('/todos')) {
+            todoHandle(req, res);
+            return;
+        }
+        res.writeHead(200, headers);
+        res.end('Server is worked');
+    }catch (err) {
+        res.writeHead(500);
+        res.end(JSON.stringify({errorMessage: 'Server does not work'}));
     }
-    if(req.url.startsWith('/auth')) {
-        authHandle(req, res);
-        return;
-    }
-    if (req.url.startsWith('/todos')) {
-        todoHandle(req, res);
-        return;
-    }
-    res.writeHead(200, headers);
-    res.end('Server is worked');
+
 
 }).listen(8081, () => console.log('Сервер работает!'));
 
 
 function authHandle(req, res) {
-    if(req.url.endsWith('/logout')) {
-        const reqToken = (req.headers.authorization || '').replace('Bearer ', '');
-        if(reqToken) {
-            cacheToken.delete(reqToken);
-            res.writeHead(200, headers);
-            res.end(JSON.stringify('Ok'));
-        }else {
-            res.writeHead(400, headers);
-            res.end(JSON.stringify({error: "no session"}));
+     try {
+        if(req.url.endsWith('/logout')) {
+            const reqToken = (req.headers.authorization || '').replace('Bearer ', '');
+            if(reqToken) {
+                cacheToken.delete(reqToken);
+                res.writeHead(200, headers);
+                res.end(JSON.stringify('Ok'));
+            }else {
+                res.writeHead(400, headers);
+                res.end(JSON.stringify({error: "no session"}));
+            }
+            return;
         }
-        return;
+        if(req.url.endsWith('/user')) {
+            const reqToken = (req.headers.authorization || '').replace('Bearer ', '');
+            const jwtToken = cacheToken.get(reqToken);
+            if(jwtToken){
+                req.headers.authorization = `Bearer ${jwtToken}`
+            }
+            const urlPathName = urlObj.parse(req.url, true).pathname;
+            proxy.web(req, res, {
+                target: getTarget(urlPathName),
+                changeOrigin: true,
+                secure: false
+            });
+            return;
+        }
+        if(req.url.endsWith('/login') || req.url.endsWith('/signup') || req.url.endsWith('/answer') || req.url.endsWith('/jwt-token')) {
+            const urlPathName = urlObj.parse(req.url, true).pathname;
+            proxy.web(req, res, {
+                target: getTarget(urlPathName),
+                changeOrigin: true,
+                secure: false
+            });
+        }
+     } catch (err) {
+         res.writeHead(500);
+         res.end(JSON.stringify({errorMessage: 'Server does not work. Cause: Auth server'}));
+     }
+
+
+}
+
+function optionsHandle(req, res) {
+    try {
+        res.writeHead(200, headers);
+        res.end('Server is worked');
+    } catch (err) {
+        res.writeHead(500);
+        res.end(JSON.stringify({errorMessage: 'Server does not work. Cause: Options'}));
     }
-    if(req.url.endsWith('/login') || req.url.endsWith('/signup') || req.url.endsWith('/answer') || req.url.endsWith('/jwt-token')) {
+}
+
+function todoHandle(req, res) {
+    try {
+        const reqToken = (req.headers.authorization || '').replace('Bearer ', '');
+        const jwtToken = cacheToken.get(reqToken);
+        if(jwtToken){
+            req.headers.authorization = `Bearer ${jwtToken}`
+        }
         const urlPathName = urlObj.parse(req.url, true).pathname;
         proxy.web(req, res, {
             target: getTarget(urlPathName),
             changeOrigin: true,
             secure: false
         });
+    }catch (err) {
+        res.writeHead(500);
+        res.end(JSON.stringify({errorMessage: 'Server does not work. Cause: Resource server'}));
     }
-
-}
-
-function optionsHandle(req, res) {
-    res.writeHead(200, headers);
-    res.end('Server is worked');
-}
-
-function todoHandle(req, res) {
-    const reqToken = (req.headers.authorization || '').replace('Bearer ', '');
-    const jwtToken = cacheToken.get(reqToken);
-    if(jwtToken){
-        req.headers.authorization = `Bearer ${jwtToken}`
-    }
-    const urlPathName = urlObj.parse(req.url, true).pathname;
-    proxy.web(req, res, {
-        target: getTarget(urlPathName),
-        changeOrigin: true,
-        secure: false
-    });
 }
 
 

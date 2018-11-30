@@ -1,3 +1,49 @@
-<p>
-  laboratory-three works!
-</p>
+<h1>Технология oAuth</h1>
+<h2>Указания по выполнению лабораторной работы:</h2>
+<ol>
+  <li>Войти в систему Authorization Guide (Если нет учетной записи, необходимо зарегистрироваться).</li>
+  <li>В меню приложения нажмите "логирование". Найдите соотвествующий токен.</li>
+  <li>Вставьте токен, убедитесь, что токен соответствует данным пользователя. Повторите с невалидным токеном (любая последовательность символов). Сделайте выводы.</li>
+</ol>
+<h2>Вопросы:</h2>
+<ol>
+  <li>Что из себя представляет oAuth?</li>
+  <li>Какие преимущества данной технологии?</li>
+  <li>Какими способами можно передать токен на авторизационный сервер?</li>
+</ol>
+<div [formGroup]="formGroup" class="user-container">
+  <h3>Request (Headers):</h3>
+  <div class="header">
+    <label for="header_id">Authorization: Bearer </label>
+    <input [formControl]="tokenFormControl" id="header_id" type="text" placeholder="Введите токен..."/>
+    <div *ngIf="errorMessage" @myAnimation class="error-message">{{errorMessage}}</div>
+  </div>
+  <ng-container *ngIf="userResponse | async; let $userResponse">
+    <h3 @myAnimation>Response:</h3>
+    <div @myAnimation class="response-container">
+      <div class="jwt-token">
+        <div class="response-header">JWT-токен</div>
+        <div class="response-value">{{$userResponse.jwtToken}}</div>
+      </div>
+      <div class="user">
+        <div class="response-header">Пользователь</div>
+        <div class="response-value">
+          <div>Имя: {{$userResponse.user.firstName}}</div>
+          <div>Фамилия: {{$userResponse.user.lastName}}</div>
+          <div>Логин: {{$userResponse.user.username}}</div>
+          <div>Эл. адрес: {{$userResponse.user.email}}</div>
+          <div>Телефон: {{$userResponse.user.phoneNumber}}</div>
+          <div>Права:</div>
+        </div>
+      </div>
+      <div class="general">
+        <div class="response-header">Общее</div>
+        <div class="response-value">
+          <div>Метод: {{$userResponse.response.method}}</div>
+          <div>Статус: {{$userResponse.response.status}}</div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <app-button (click)="check()" value="Проверить"></app-button>
+</div>

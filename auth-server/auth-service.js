@@ -8,8 +8,6 @@ MongoClient.connect('mongodb://localhost:27017', function(err, client) {
 });
 
 function login(username, password) {
-    console.log('sds')
-    console.log(username, password);
     const dbName = 'users';
     const db = clientDB.db(dbName);
     const collection = db.collection('users');
